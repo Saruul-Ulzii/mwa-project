@@ -1,10 +1,10 @@
-function fibonacci(number) {
-  console.log(number);
+const fib = function (number) {
   if (number < 0) {
-    return fibonacci(number * -1);
+    return fib(number * -1);
   }
   if (number <= 2) return 1;
-  else return fibonacci(number - 1) + fibonacci(number - 2);
-}
+  else return fib(number - 1) + fib(number - 2);
+};
 
-console.log(fibonacci(number));
+let number = process.argv[2];
+console.log(`Fibonacci(${number}) =`, fib(number));
