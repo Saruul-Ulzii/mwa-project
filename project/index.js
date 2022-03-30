@@ -1,39 +1,20 @@
-const http = require("http");
-const fs = require("fs");
+const express = require("express");
 const path = require("path");
+require("dotenv").config();
 
-let pageBuffer;
-let statusCode;
+const app = express();
+const configs = process.env;
 
-const requestHandler = function (req, res) {
-  switch (req.url) {
-    case "/page1":
-      pageFetcher("page1", res);
-      break;
-    case "/page2":
-      pageFetcher("page2", res);
-      break;
+app.use(express.static(path.join(__dirname, configs.RESOURCE_PATH)));
 
-    default:
-      pageFetcher("index", res);
-      break;
-  }
-};
+app.get(configs.INDEX_URL, function (req, res) {
+  res.status(200).sendFile(path.join(__dirname, configs.INDEX_PATH));
+});
 
-const pageFetcher = function (pathToPage, res) {
-  fs.readFile(path.join(__dirname, pathToPage), function (err, buffer) {
-    if (err) {
-      pageBuffer = "Oops! Please contact admin!";
-      statusCode = 404;
-    } else {
-      pageBuffer = buffer;
-      statusCode = 200;
-    }
+app.get("*", function (req, res) {
+  res.status(200).sendFile(path.join(__dirname, configs.INDEX_PATH));
+});
 
-    res.setHeader("Content-Type", "text/html");
-    res.writeHead(statusCode);
-    res.end(pageBuffer);
-  });
-};
-
-const server = http.createServer(requestHandler);
+const server = app.listen(configs.PORT, function () {
+  console.log(configs.SERVER_RUNNING_ON_PORT_MESSAGE, configs.PORT);
+});
