@@ -1,16 +1,12 @@
 {
-  "name": "meangame",
+  "name": "day3",
   "version": "1.0.0",
-  "description": "Game made in MEAN stack",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "start":"node index.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [
-    "NODE",
-    "EXPRESS"
-  ],
   "author": "Saruul-Ulzii Sampilnorov",
   "license": "ISC",
   "dependencies": {

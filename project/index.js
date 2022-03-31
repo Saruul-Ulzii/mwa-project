@@ -1,11 +1,17 @@
+const { urlencoded } = require("express");
 const express = require("express");
 const path = require("path");
 require("dotenv").config();
 
+const routes = require("./routes");
+
 const app = express();
 const configs = process.env;
 
+app.use(express.json());
+app.use(urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, configs.RESOURCE_PATH)));
+app.use(configs.API_URL, routes);
 
 app.get(configs.INDEX_URL, function (req, res) {
   res.status(200).sendFile(path.join(__dirname, configs.INDEX_PATH));
