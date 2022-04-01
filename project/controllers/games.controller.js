@@ -123,11 +123,11 @@ const deleteOne = function (req, res) {
     const gamesCollection = getCollection(process.env.GAMES_COLLECTION_NAME);
     gamesCollection.deleteOne(
       { _id: ObjectId(req.params.gameId) },
-      function (err, game) {
+      function (err, deletedGame) {
         if (err) {
           res.status(400).json({ error: err });
         } else {
-          res.status(200).json(game);
+          res.status(200).json(deletedGame);
         }
       }
     );
