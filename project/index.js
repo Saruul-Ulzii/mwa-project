@@ -1,7 +1,8 @@
+require("dotenv").config();
+require("./resources/data/dbconnection").open();
 const { urlencoded } = require("express");
 const express = require("express");
 const path = require("path");
-require("dotenv").config();
 
 const routes = require("./routes");
 
