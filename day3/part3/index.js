@@ -1,8 +1,8 @@
+require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const routes = require("./routes");
 
-require("dotenv").config();
 const configs = process.env;
 
 const app = express();
