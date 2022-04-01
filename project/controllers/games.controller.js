@@ -60,7 +60,7 @@ const addOne = function (req, res) {
       minPlayers < process.env.GAME_PLAYER_COUNT_MIN ||
       minPlayers > process.env.GAME_PLAYER_COUNT_MAX
     ) {
-      res.send(200).json({
+      res.status(200).json({
         Message: `${process.env.GAME_PLAYER_COUNT_MESSAGE} [${process.env.GAME_PLAYER_COUNT_MIN}-${process.env.GAME_PLAYER_COUNT_MAX}]`,
       });
       return;
@@ -74,7 +74,7 @@ const addOne = function (req, res) {
       age < process.env.GAME_PLAYER_AGE_MIN ||
       age > process.env.GAME_PLAYER_AGE_MAX
     ) {
-      res.send(400).json({
+      res.status(400).json({
         Message: `${process.env.GAME_PLAYER_AGE_MESSAGE} [${process.env.GAME_PLAYER_AGE_MIN}-${process.env.GAME_PLAYER_AGE_MAX}]`,
       });
       return;
@@ -84,7 +84,7 @@ const addOne = function (req, res) {
   if (req.body && req.body.price) {
     let price = parseFloat(req.body.price);
     if (price < 0) {
-      res.send(400).json({
+      res.status(400).json({
         Message: process.env.GAME_PRICE_REQUIRED_MESSAGE,
       });
       return;
@@ -94,7 +94,7 @@ const addOne = function (req, res) {
   if (req.body && req.body.title) {
     let title = parseFloat(req.body.title);
     if (title || title == "") {
-      res.send(400).json({
+      res.status(400).json({
         Message: process.env.GAME_TITLE_REQUIRED_MESSAGE,
       });
       return;
@@ -102,7 +102,7 @@ const addOne = function (req, res) {
     newGame.title = title;
   }
   if (newGame != {}) {
-    const gamesCollection = getCollection("games");
+    const gamesCollection = getCollection(process.env.GAMES_COLLECTION_NAME);
     gamesCollection.insertOne(newGame, function (err, savedGame) {
       if (err) {
         res.status(500).json({ error: err });
@@ -115,6 +115,15 @@ const addOne = function (req, res) {
 
 const deleteOne = function (req, res) {
   let gameId = req.params.gameId;
+
+  const gamesCollection = getCollection(process.env.GAMES_COLLECTION_NAME);
+  gamesCollection.deleteOne({ _id: ObjectId(gameId) }, function (err, game) {
+    if (err) {
+      res.status(400).json({ error: err });
+    } else {
+      res.status(200).json(game);
+    }
+  });
 };
 
 module.exports = {
