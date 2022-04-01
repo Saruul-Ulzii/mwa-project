@@ -36,17 +36,21 @@ const getAll = function (req, res) {
 };
 
 const getOne = function (req, res) {
-  const gamesCollection = getCollection(process.env.GAMES_COLLECTION_NAME);
-  gamesCollection.findOne(
-    { _id: ObjectId(req.params.gameId) },
-    function (err, game) {
-      if (err) {
-        res.status(400).json({ error: err });
-      } else {
-        res.status(200).json(game);
+  if (req.params.gameId) {
+    const gamesCollection = getCollection(process.env.GAMES_COLLECTION_NAME);
+    gamesCollection.findOne(
+      { _id: ObjectId(req.params.gameId) },
+      function (err, game) {
+        if (err) {
+          res.status(400).json({ error: err });
+        } else {
+          res.status(200).json(game);
+        }
       }
-    }
-  );
+    );
+  } else {
+    res.status(400).json({ Message: process.env.GAME_ID_REQUIRED_MESSAGE });
+  }
 };
 
 const addOne = function (req, res) {
@@ -115,17 +119,21 @@ const addOne = function (req, res) {
 };
 
 const deleteOne = function (req, res) {
-  const gamesCollection = getCollection(process.env.GAMES_COLLECTION_NAME);
-  gamesCollection.deleteOne(
-    { _id: ObjectId(req.params.gameId) },
-    function (err, game) {
-      if (err) {
-        res.status(400).json({ error: err });
-      } else {
-        res.status(200).json(game);
+  if (req.params.gameId) {
+    const gamesCollection = getCollection(process.env.GAMES_COLLECTION_NAME);
+    gamesCollection.deleteOne(
+      { _id: ObjectId(req.params.gameId) },
+      function (err, game) {
+        if (err) {
+          res.status(400).json({ error: err });
+        } else {
+          res.status(200).json(game);
+        }
       }
-    }
-  );
+    );
+  } else {
+    res.status(400).json({ Message: process.env.GAME_ID_REQUIRED_MESSAGE });
+  }
 };
 
 module.exports = {
