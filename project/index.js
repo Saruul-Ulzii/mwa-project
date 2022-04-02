@@ -1,10 +1,10 @@
 require("dotenv").config();
-require("./resources/data/dbconnection").open();
+require("./api/data/db");
 const { urlencoded } = require("express");
 const express = require("express");
 const path = require("path");
 
-const routes = require("./routes");
+const routes = require("./api/routes");
 
 const app = express();
 const configs = process.env;
