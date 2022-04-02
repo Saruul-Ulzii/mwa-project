@@ -10,7 +10,7 @@ const GameSchema = mongoose.Schema({
   title: { type: String, required: true },
   year: Number,
   rate: { type: Number, min: 1, max: 5, default: 1 },
-  price: Number,
+  price: { type: Number, default: 0.0 },
   minPlayers: { type: Number, min: 1, max: 10 },
   maxPlayers: { type: Number, min: 1, max: 10 },
   minAge: Number,
