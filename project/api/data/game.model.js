@@ -6,6 +6,11 @@ const PublisherSchema = mongoose.Schema({
   established: Number,
 });
 
+const ReviewSchema = mongoose.Schema({
+  name: { type: String, required: true },
+  date: Date,
+});
+
 const GameSchema = mongoose.Schema({
   title: { type: String, required: true },
   year: Number,
@@ -16,6 +21,7 @@ const GameSchema = mongoose.Schema({
   minAge: Number,
   publisher: PublisherSchema,
   designers: [String],
+  reviews: [ReviewSchema],
 });
 
 mongoose.model(
