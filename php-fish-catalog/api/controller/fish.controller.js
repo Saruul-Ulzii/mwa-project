@@ -58,9 +58,7 @@ const _getAll = function (err, fishes, response, res) {
 const getOne = function (req, res) {
   const fishId = req.params.fishId;
   if (mongoose.isValidObjectId(fishId)) {
-    FishSchema.findById(fishId).exec((err, fish) =>
-      _getFish(err, fish, res)
-    );
+    FishSchema.findById(fishId).exec((err, fish) => _getFish(err, fish, res));
   } else {
     res.status(400).json({ Message: env.INVALID_FISHID_MESSAGE });
   }
@@ -104,11 +102,19 @@ const addOne = function (req, res) {
 };
 
 const _addFish = function (err, createdFish, res) {
+  let response = {
+    status: 200,
+    message: {},
+  };
   if (err) {
-    res.status(500).json(err);
+    response.status = 500;
+    response.message = err;
   } else {
-    res.status(200).json(createdFish);
+    response.status = 200;
+    response.message = createdFish;
   }
+
+  res.status(response.status).json(response.message);
 };
 
 const deleteOne = function (req, res) {
@@ -123,11 +129,19 @@ const deleteOne = function (req, res) {
 };
 
 const _deleteFish = function (err, deletedFish, res) {
+  let response = {
+    status: 200,
+    message: {},
+  };
   if (err) {
-    res.status(500).json(err);
+    res.status = 500;
+    res.message = err;
   } else {
-    res.status(200).json(deletedFish);
+    res.status = 200;
+    res.message = deletedFish;
   }
+
+  res.status(response.status).json(response.message);
 };
 
 const update = function (req, res) {

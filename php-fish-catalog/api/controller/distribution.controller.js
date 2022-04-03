@@ -16,11 +16,19 @@ const getAll = function (req, res) {
 };
 
 const _getAll = function (err, fishes, res) {
+  let response = {
+    status: 200,
+    message: {},
+  };
   if (err) {
-    res.status(500).json(err);
+    response.status = 500;
+    response.message = err;
   } else {
-    res.status(200).json(fishes.distribution);
+    response.status = 200;
+    response.message = fishes.distribution;
   }
+
+  res.status(response.status).json(response.message);
 };
 
 const getOne = function (req, res) {
@@ -37,11 +45,19 @@ const getOne = function (req, res) {
 };
 
 const _getOneDist = function (err, fish, res, distId) {
+  let response = {
+    status: 200,
+    message: {},
+  };
   if (err) {
-    res.status(500).json({ Message: err });
+    response.status = 500;
+    response.message = err;
   } else {
-    res.status(200).json(fish.distribution.id(distId));
+    response.status = 200;
+    response.message = fish.distribution.id(distId);
   }
+
+  res.status(response.status).json(response.message);
 };
 
 const addOne = function (req, res) {
