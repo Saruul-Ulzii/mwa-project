@@ -9,7 +9,7 @@ const getAll = function (req, res) {
   const maxCount = parseInt(env.FETCH_COUNT_MAX_VALUE);
 
   let response = {
-    status: 200,
+    status: env.STATUS_CODE_200,
     message: {},
   };
 
@@ -21,18 +21,18 @@ const getAll = function (req, res) {
   }
 
   if (isNaN(count) || isNaN(offset)) {
-    response.status = 400;
+    response.status = env.STATUS_CODE_400;
     response.message = { Message: env.OFFSET_AND_COUNT_DIGITS_MESSAGE };
   }
 
   if (count > maxCount) {
-    response.status = 400;
+    response.status = env.STATUS_CODE_400;
     response.message = {
       Message: `${env.COUNT_LESS_MESSAGE} ${env.FETCH_COUNT_MAX_VALUE}`,
     };
   }
 
-  if (response.status !== 200) {
+  if (response.status !== env.STATUS_CODE_200) {
     res.status(response.status).json(response.message);
     return;
   }
@@ -45,10 +45,10 @@ const getAll = function (req, res) {
 
 const _getAll = function (err, fishes, response, res) {
   if (err) {
-    response.status = 500;
+    response.status = env.STATUS_CODE_500;
     response.message = err;
   } else {
-    response.status = 200;
+    response.status = env.STATUS_CODE_200;
     response.message = fishes;
   }
 
@@ -60,24 +60,26 @@ const getOne = function (req, res) {
   if (mongoose.isValidObjectId(fishId)) {
     FishSchema.findById(fishId).exec((err, fish) => _getFish(err, fish, res));
   } else {
-    res.status(400).json({ Message: env.INVALID_FISHID_MESSAGE });
+    res
+      .status(env.STATUS_CODE_400)
+      .json({ Message: env.INVALID_FISHID_MESSAGE });
   }
 };
 
 const _getFish = function (err, fish, res) {
   let response = {
-    status: 200,
+    status: env.STATUS_CODE_200,
     message: {},
   };
   if (err) {
-    response.status = 500;
+    response.status = env.STATUS_CODE_500;
     response.message = err;
   } else {
     if (fish) {
-      response.status = 200;
+      response.status = env.STATUS_CODE_200;
       response.message = fish;
     } else {
-      response.status = 404;
+      response.status = env.STATUS_CODE_404;
       response.message = { Message: env.FISH_NOT_FOUND_MESSAGE };
     }
   }
@@ -97,20 +99,22 @@ const addOne = function (req, res) {
       _addFish(err, createdFish, res)
     );
   } else {
-    res.status(400).json({ Message: env.NAME_REQUIRED_MESSAGE });
+    res
+      .status(env.STATUS_CODE_400)
+      .json({ Message: env.NAME_REQUIRED_MESSAGE });
   }
 };
 
 const _addFish = function (err, createdFish, res) {
   let response = {
-    status: 200,
+    status: env.STATUS_CODE_200,
     message: {},
   };
   if (err) {
-    response.status = 500;
+    response.status = env.STATUS_CODE_500;
     response.message = err;
   } else {
-    response.status = 200;
+    response.status = env.STATUS_CODE_200;
     response.message = createdFish;
   }
 
@@ -124,20 +128,22 @@ const deleteOne = function (req, res) {
       _deleteFish(err, fish, res)
     );
   } else {
-    res.status(400).json({ Message: env.INVALID_FISHID_MESSAGE });
+    res
+      .status(env.STATUS_CODE_400)
+      .json({ Message: env.INVALID_FISHID_MESSAGE });
   }
 };
 
 const _deleteFish = function (err, deletedFish, res) {
   let response = {
-    status: 200,
+    status: env.STATUS_CODE_200,
     message: {},
   };
   if (err) {
-    res.status = 500;
+    res.status = env.STATUS_CODE_500;
     res.message = err;
   } else {
-    res.status = 200;
+    res.status = env.STATUS_CODE_200;
     res.message = deletedFish;
   }
 
@@ -148,18 +154,20 @@ const update = function (req, res) {
   const fishId = req.params.fishId;
 
   if (req.body.name == "") {
-    res.status(200).json({ Message: env.NAME_REQUIRED_MESSAGE });
+    res
+      .status(env.STATUS_CODE_200)
+      .json({ Message: env.NAME_REQUIRED_MESSAGE });
     return;
   }
 
   if (mongoose.isValidObjectId(fishId)) {
     FishSchema.findById(fishId).exec(function (err, fish) {
       let response = {
-        status: 200,
+        status: env.STATUS_CODE_200,
         message: {},
       };
       if (err) {
-        response.status = 500;
+        response.status = env.STATUS_CODE_500;
         response.message = err;
 
         res.status(response.status).json(response.message);
@@ -167,7 +175,7 @@ const update = function (req, res) {
         if (fish) {
           _updateFish(req, res, fish);
         } else {
-          response.status = 404;
+          response.status = env.STATUS_CODE_404;
           response.message = { Message: env.FISH_NOT_FOUND_MESSAGE };
 
           res.status(response.status).json(response.message);
@@ -175,7 +183,9 @@ const update = function (req, res) {
       }
     });
   } else {
-    res.status(400).json({ Message: env.INVALID_FISHID_MESSAGE });
+    res
+      .status(env.STATUS_CODE_400)
+      .json({ Message: env.INVALID_FISHID_MESSAGE });
   }
 };
 
@@ -192,14 +202,14 @@ function _updateFish(req, res, fish) {
 
   fish.save(function (err, updatedFish) {
     let response = {
-      status: 200,
+      status: env.STATUS_CODE_200,
       message: {},
     };
     if (err) {
-      response.status = 500;
+      response.status = env.STATUS_CODE_500;
       response.message = err;
     } else {
-      response.status = 200;
+      response.status = env.STATUS_CODE_200;
       response.message = updatedFish;
     }
 
