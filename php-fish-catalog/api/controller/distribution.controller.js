@@ -108,7 +108,9 @@ const _addDistToFish = function (err, fish, newDist, res) {
         res.status(response.status).json(response.message);
       });
     } else {
-      res.status(404).json({ Message: env.FISH_NOT_FOUND_MESSAGE });
+      res
+        .status(env.STATUS_CODE_404)
+        .json({ Message: env.FISH_NOT_FOUND_MESSAGE });
     }
   }
 };
