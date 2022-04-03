@@ -59,14 +59,14 @@ const getOne = function (req, res) {
   const fishId = req.params.fishId;
   if (mongoose.isValidObjectId(fishId)) {
     FishSchema.findById(fishId).exec((err, fish) =>
-      _getOneFish(err, fish, res)
+      _getFish(err, fish, res)
     );
   } else {
     res.status(400).json({ Message: env.INVALID_FISHID_MESSAGE });
   }
 };
 
-const _getOneFish = function (err, fish, res) {
+const _getFish = function (err, fish, res) {
   let response = {
     status: 200,
     message: {},
