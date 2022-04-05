@@ -12,11 +12,21 @@ router
 router
   .route(process.env.GAME_BY_ID_URL)
   .get(gameController.getOne)
-  .delete(gameController.deleteOne);
+  .delete(gameController.deleteOne)
+  .put(gameController.updateOne)
+  .patch(gameController.updateOne);
 
-router.route(process.env.GAME_PUBLISHER_URL).get(publisherController.getOne);
+router
+  .route(process.env.GAME_PUBLISHER_URL)
+  .get(publisherController.getOne)
+  .put(publisherController.updateOne)
+  .patch(publisherController.updateOne);
 
 router.route(process.env.GAME_REVIEWS_URL).get(reviewController.getAll);
-router.route(process.env.GAME_ONE_REVIEW_URL).get(reviewController.getOne);
+router
+  .route(process.env.GAME_ONE_REVIEW_URL)
+  .get(reviewController.getOne)
+  .put(reviewController.updateOne)
+  .patch(reviewController.updateOne);
 
 module.exports = router;

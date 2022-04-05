@@ -48,11 +48,13 @@ const getOne = function (req, res) {
 
 const addOne = function (req, res) {
   if (req.body) {
-    let newGame = {};
-    newGame.title = req.body.title;
-    newGame.price = req.body.price;
-    newGame.minPlayers = req.body.minPlayers;
-    newGame.age = req.body.age;
+    let newGame = {
+      title: req.body.title,
+      price: req.body.price,
+      minPlayers: req.body.minPlayers,
+      age: req.body.age,
+      publisher: { name: process.env.GAMES_PUBLISHER_DUMMY_NAME },
+    };
 
     GameSchema.create(newGame, function (err, savedGame) {
       if (err) {
@@ -83,9 +85,68 @@ const deleteOne = function (req, res) {
   }
 };
 
+const updateOne = function (req, res) {
+  const gameId = req.params.gameId;
+
+  if (mongoose.isValidObjectId(gameId)) {
+    GameSchema.findById(gameId).exec((err, game) =>
+      _updateGame(err, game, req, res)
+    );
+  } else {
+    res.status(400).json({ Message: process.env.GAME_ID_REQUIRED_MESSAGE });
+  }
+};
+
+_updateGame = function (err, game, req, res) {
+  const response = {
+    status: 200,
+    message: {},
+  };
+  if (err) {
+    response.status = 500;
+    response.message = err;
+
+    res.status(response.status).json(response.message);
+  } else {
+    if (game) {
+      const isFullUpdate = req.method == process.env.PUT_METHOD;
+      game.title = isFullUpdate ? req.body.title : req.body.title || game.title;
+      game.year = isFullUpdate ? req.body.year : req.body.year || game.year;
+      game.price = isFullUpdate ? req.body.price : req.body.price || game.price;
+      game.minPlayers = isFullUpdate
+        ? req.body.minPlayers
+        : req.body.minPlayers || game.minPlayers;
+      game.maxPlayers = isFullUpdate
+        ? req.body.maxPlayers
+        : req.body.maxPlayers || game.maxPlayers;
+      game.minAge = isFullUpdate
+        ? req.body.minAge
+        : req.body.minAge || game.minAge;
+
+      game.save(function (err, savedGame) {
+        if (err) {
+          response.status = 500;
+          response.message = err;
+        } else {
+          response.status = 200;
+          response.message = savedGame;
+        }
+
+        res.status(response.status).json(response.message);
+      });
+    } else {
+      response.status = 404;
+      response.message = { Message: process.env.GAME_NOT_FOUND_MESSAGE };
+
+      res.status(response.status).json(response.message);
+    }
+  }
+};
+
 module.exports = {
   getAll,
   getOne,
   addOne,
   deleteOne,
+  updateOne,
 };

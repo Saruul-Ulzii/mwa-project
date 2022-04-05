@@ -7,8 +7,10 @@ const PublisherSchema = mongoose.Schema({
 });
 
 const ReviewSchema = mongoose.Schema({
-  name: { type: String, required: true },
-  date: Date,
+  title: { type: String, required: true },
+  rating: { type: Number, min: 1, max: 5 },
+  review: String,
+  postDate: Date,
 });
 
 const GameSchema = mongoose.Schema({
