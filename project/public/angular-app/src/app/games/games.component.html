@@ -1,1 +1,15 @@
-GAMES
+<ul>
+  <li *ngFor="let game of games">
+    <span
+      class="delete"
+      (click)="deleteGame(game._id)"
+      title="Delete {{ game.title }}"
+      >❌</span
+    >
+    <a
+      routerLink="/game/{{ game._id }}"
+      title="Show details of &quot;{{ game.title }}&quot;"
+      >{{ game.title }}</a
+    >
+  </li>
+</ul>

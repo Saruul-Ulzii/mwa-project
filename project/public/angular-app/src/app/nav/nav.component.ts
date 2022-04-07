@@ -14,10 +14,14 @@ export class NavComponent implements OnInit {
   }
 
   onHome(){
+    console.log('home');
+    
     this._router.navigate([""])
   }
 
   onGames(){
+    console.log('games');
+    
     this._router.navigate(["games"])
   }
 }
