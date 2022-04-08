@@ -13,3 +13,71 @@
     >
   </li>
 </ul>
+
+<div class="add_game">
+  <form (ngSubmit)="addGame()" [formGroup]="addGameForm">
+    <div>
+      <label for="title">Title</label>
+      <input formControlName="title" type="text" placeholder="Title" />
+    </div>
+    <div>
+      <label for="price">Price</label>
+      <input formControlName="price" type="text" placeholder="Price" />
+    </div>
+    <div>
+      <label for="year">Year</label>
+      <input formControlName="year" type="text" placeholder="Year" />
+    </div>
+    <div>
+      <label for="rate">Rate</label>
+      <input formControlName="rate" type="text" placeholder="Rate" />
+    </div>
+    <div>
+      <label for="username">Min Players</label>
+      <input
+        formControlName="minPlayers"
+        type="text"
+        placeholder="Min Players count"
+      />
+    </div>
+    <div>
+      <label for="username">Max Players</label>
+      <input
+        formControlName="maxPlayers"
+        type="text"
+        placeholder="Max players count"
+      />
+    </div>
+    <div>
+      <label for="username">Minimum age</label>
+      <input formControlName="minAge" type="text" placeholder="Minimum age" />
+    </div>
+    <button type="submit" [disabled]="!addGameForm.valid">Add game</button>
+  </form>
+</div>
+<!-- 
+<div class="games-list">
+  <div class="card-wrapper" *ngFor="let game of games">
+    <mat-card class="game-card">
+      <mat-card-header>
+        <mat-card-title
+          ><a
+            class="mat-decent"
+            target="_blank"
+            href="https://www.google.com/search?q={{ game.title }} card game"
+            >{{ game.title }}</a
+          ><stars-rating [rating]="game.rate"></stars-rating
+        ></mat-card-title>
+      </mat-card-header>
+      <mat-card-footer>
+        <button
+          mat-fab
+          color="primary"
+          aria-label="Example icon button with a delete icon"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-footer>
+    </mat-card>
+  </div>
+</div> -->

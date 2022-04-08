@@ -28,4 +28,14 @@ export class GamesDataService {
     const url: string = this.baseUrl + '/games/' + gameId;
     return this.http.delete<any>(url);
   }
+
+  addGame(game: {}): Observable<any> {
+    const headers = { 'content-type': 'application/json' };
+    const body = JSON.stringify(game);
+    console.log('body');
+    console.log(body);
+
+    const url: string = this.baseUrl + '/games';
+    return this.http.post<any>(url, body, { headers: headers });
+  }
 }

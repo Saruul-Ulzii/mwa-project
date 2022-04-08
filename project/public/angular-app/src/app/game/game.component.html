@@ -1,7 +1,43 @@
-<h1>{{ game.title }} <stars-rating [rating]="game.rate"></stars-rating></h1>
+<div class="card-wrapper" *ngIf="game != null">
+  <mat-card class="game-card">
+    <mat-card-header>
+      <mat-card-title
+        ><a
+          class="mat-decent"
+          target="_blank"
+          href="https://www.google.com/search?q={{ game.title }} card game"
+          >{{ game.title }}</a
+        ><stars-rating [rating]="game.rate"></stars-rating
+      ></mat-card-title>
+      <mat-card-subtitle>
+        Established on {{ game.year }} by
+        <a
+          target="_blank"
+          href="https://www.google.com/search?q={{
+            game.publisher.name
+          }} card game"
+          ><b>{{ game.publisher.name }}</b></a
+        >
+      </mat-card-subtitle>
+    </mat-card-header>
+    <img
+      mat-card-image
+      src="https://cf.geekdo-images.com/m_RzXpHURC0_xLkvRSR_sw__opengraph/img/EtHvLJyDLe8vDUPKrp9DHbKTnRI=/fit-in/1200x630/filters:strip_icc()/pic3043734.jpg"
+      alt="Card game"
+    />
+    <mat-card-content>
+      <!-- <mat-icon aria-hidden="false" aria-label="Example home icon"
+          >home</mat-icon
+        > -->
+      <span> {{ game.price }}</span>
+      Max Players: {{ game.minPlayers }} Min Players:
+      {{ game.maxPlayers }}
+    </mat-card-content>
 
-Year: {{ game.year }} <br />
-price: {{ game.price }} <br />
-Min year: {{ game.year }} <br />
-Max Players: {{ game.minPlayers }} <br />
-Min Players: {{ game.maxPlayers }}
+    <mat-card-actions>
+      <button mat-raised-button color="accent" (click)="deleteGame()">
+        DELETE IT!
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>

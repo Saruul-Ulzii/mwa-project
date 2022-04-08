@@ -1,0 +1,19 @@
+.card-wrapper {
+  margin-top: 50px;
+}
+
+.game-card {
+  max-width: 400px;
+  max-height: 600px;
+  height: 600px;
+  margin: auto;
+}
+
+.game-header-image {
+  background-image: url("https://material.angular.io/assets/img/examples/shiba1.jpg");
+  background-size: cover;
+}
+
+a {
+  text-decoration: none;
+}

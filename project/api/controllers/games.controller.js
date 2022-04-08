@@ -19,6 +19,7 @@ const getAll = function (req, res) {
   GameSchema.find()
     .skip(offset)
     .limit(count)
+    .sort({ _id: -1 })
     .exec(function (err, games) {
       if (err) {
         console.error(err);
@@ -51,13 +52,18 @@ const addOne = function (req, res) {
     let newGame = {
       title: req.body.title,
       price: req.body.price,
+      year: req.body.year,
+      rate: req.body.rate,
       minPlayers: req.body.minPlayers,
-      age: req.body.age,
+      maxPlayers: req.body.maxPlayers,
+      minAge: req.body.minAge,
       publisher: { name: process.env.GAMES_PUBLISHER_DUMMY_NAME },
     };
 
+    console.log(newGame);
     GameSchema.create(newGame, function (err, savedGame) {
       if (err) {
+        console.log(err);
         res.status(500).json({ error: err });
       } else {
         res.status(201).json(savedGame);
