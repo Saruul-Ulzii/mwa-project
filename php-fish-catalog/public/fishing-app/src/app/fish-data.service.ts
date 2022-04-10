@@ -13,7 +13,10 @@ export class FishDataService {
 
   getFishes(search: string): Observable<Fish[]> {
     return this.http.get<Fish[]>(
-      this.base_url + environment.GETALL_URL + search
+      this.base_url +
+        environment.GETALL_URL +
+        search +
+        environment.COUNT_QUERY_PARAM
     );
   }
   getFish(fishId: string): Observable<Fish> {

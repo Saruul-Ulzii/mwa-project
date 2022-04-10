@@ -1,11 +1,12 @@
 form {
   width: 30%;
+  margin: auto;
   display: flex;
   flex-direction: column;
 }
 
 .dist input {
-  width: 90%;
+  flex: 10;
 }
 
 button {

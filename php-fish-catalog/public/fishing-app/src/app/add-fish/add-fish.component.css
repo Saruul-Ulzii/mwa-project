@@ -1,5 +1,6 @@
 form {
   width: 30%;
+  margin: auto;
   display: flex;
   flex-direction: column;
 }
@@ -25,4 +26,8 @@ form {
   display: flex;
   margin-top: 5px;
   padding: 0 10px;
+}
+
+.dist input {
+  flex: 10;
 }

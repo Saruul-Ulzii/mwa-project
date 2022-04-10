@@ -1,0 +1,31 @@
+.delete {
+  background-color: #ffc3c3;
+  height: 20px;
+  width: 20px;
+  margin: 0;
+  padding: 0;
+}
+
+.fishes {
+  display: inline-grid;
+  grid-template-columns: auto auto auto;
+  background-color: #e9f5ff;
+  padding: 10px;
+  width: 100%;
+}
+
+.fish {
+  border: 1px solid lightblue;
+  padding: 3px;
+  margin: 5px;
+}
+
+.fish .img {
+  height: 70%;
+  display: flex;
+  justify-content: center;
+}
+
+.fish img {
+  width: 95%;
+}

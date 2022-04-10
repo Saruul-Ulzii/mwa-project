@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   REST_API_URL: 'http://localhost:3000/api',
   GETALL_URL: '/fishes?search=',
+  COUNT_QUERY_PARAM: '&count=6',
   GET_FISH_URL: '/fishes/',
   APP_TITLE: 'Fish category',
   PATH_FISHES: '/fishes',

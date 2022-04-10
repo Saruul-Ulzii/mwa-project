@@ -1,9 +1,21 @@
-<button routerLink="/addFish">Add</button>
 <div class="fishes" *ngIf="fishes && fishes.length > 0">
   <div class="fish" *ngFor="let fish of fishes">
-    <button (click)="deleteFish(fish._id)">X</button>
-    <button routerLink="/fish/{{ fish._id }}">Edit</button>
-    {{ fish.name }}
+    <div class="img">
+      <img
+        src="https://media.istockphoto.com/photos/the-northern-pike-picture-id163751639?k=20&m=163751639&s=612x612&w=0&h=7wB8VBt05M6d69hTsmD1mlTRuwUR7osdNt91TlxYZXg="
+        alt="Fish"
+      />
+    </div>
+    <div class="bottom-part">
+      <fieldset>
+        <legend>Name: {{ fish.name }}</legend>
+        Family: {{ fish.family }}
+        <br />
+        Food: {{ fish.food }}
+        <button class="delete" (click)="deleteFish(fish._id)">X</button>
+        <button routerLink="/fish/{{ fish._id }}">Edit</button>
+      </fieldset>
+    </div>
   </div>
 </div>
 <div *ngIf="fishes && fishes.length == 0">No fishes found!</div>
