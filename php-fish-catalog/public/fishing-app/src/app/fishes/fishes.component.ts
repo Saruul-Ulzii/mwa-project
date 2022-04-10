@@ -52,7 +52,6 @@ export class FishesComponent implements OnInit {
   deleteFish(fishId: String) {
     this.fd.deleteFish(fishId).subscribe({
       next: (result) => {
-        console.log(result);
         this.getFishes('');
       },
       error: (err) => {

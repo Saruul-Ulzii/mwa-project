@@ -38,8 +38,6 @@ export class EditFishComponent implements OnInit {
   }
 
   save() {
-    console.log('fish values', this.fish);
-
     this.fishService.updateFish(this.fish).subscribe({
       next: (updatedFish) => {
         console.log('Updated', updatedFish);

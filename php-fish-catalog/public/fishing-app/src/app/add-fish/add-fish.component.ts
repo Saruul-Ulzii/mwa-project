@@ -16,7 +16,6 @@ export class AddFishComponent implements OnInit {
   ngOnInit(): void {}
 
   addDist() {
-    console.log(this.fish.distribution);
     this.fish.distribution.push(new Distribution());
   }
 
@@ -25,10 +24,8 @@ export class AddFishComponent implements OnInit {
   }
 
   add() {
-    console.log(this.fish);
     this.fishService.addFish(this.fish).subscribe({
       next: (fish) => {
-        console.log(fish);
         this.router.navigate([environment.PATH_FISHES]);
       },
       error: (err) => {
