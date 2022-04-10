@@ -1,0 +1,28 @@
+<form (ngSubmit)="add()">
+  <label for="name">Fish name</label>
+  <input type="text" name="name" id="name" [(ngModel)]="fish.name" />
+  <br />
+  <label for="family">Family of fish</label>
+  <input type="text" name="family" id="family" [(ngModel)]="fish.family" />
+  <br />
+  <label for="food">Food </label>
+  <input type="text" name="food" id="food" [(ngModel)]="fish.food" />
+  <br />
+  <br />
+  <fieldset>
+    <div class="add_dist" (click)="addDist()">+</div>
+    <legend>Distribution</legend>
+    <div class="dist" *ngFor="let dist of fish.distribution; let i = index">
+      <input
+        type="text"
+        name="d_name{{ i }}"
+        id="food"
+        [(ngModel)]="dist.d_name"
+      />
+      <div class="remove_dist" (click)="removeDist(i)">-</div>
+    </div>
+  </fieldset>
+
+  <br />
+  <button type="submit">Add new fish</button>
+</form>

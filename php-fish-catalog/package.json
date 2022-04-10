@@ -4,7 +4,10 @@
   "description": "MEAN Stack - Personal Hobby Project",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon index.js",
+    "startBackend": "npm start",
+    "startFrontend": "cd public/fishing-app && npm start",
+    "startBoth": "npm-run-all --parallel startBackend startFrontend"
   },
   "keywords": [
     "MongoDB",
@@ -17,6 +20,7 @@
   "dependencies": {
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
-    "mongoose": "^6.2.9"
+    "mongoose": "^6.2.9",
+    "npm-run-all": "^4.1.5"
   }
 }

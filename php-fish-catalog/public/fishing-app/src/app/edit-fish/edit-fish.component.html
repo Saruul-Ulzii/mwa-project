@@ -1,0 +1,35 @@
+<form (ngSubmit)="save()" *ngIf="fish">
+  <label for="name">Name</label>
+  <input
+    type="text"
+    name="name"
+    placeholder="Name"
+    [(ngModel)]="fish.name"
+  /><br />
+  <label for="family">Family of species</label>
+  <input
+    type="text"
+    name="family"
+    placeholder="Family"
+    [(ngModel)]="fish.family"
+  /><br />
+  <label for="food">Food</label>
+  <input
+    type="text"
+    name="food"
+    placeholder="Food"
+    [(ngModel)]="fish.food"
+  /><br />
+  <div class="dist" *ngFor="let dist of fish.distribution; let i = index">
+    <input
+      type="text"
+      name="d_name{{ i }}"
+      placeholder="distribution"
+      [(ngModel)]="dist.d_name"
+    />
+    <div class="remove_dist" (click)="removeDist(i)">-</div>
+  </div>
+  <button type="submit">Save</button>
+</form>
+
+<!-- (label{Name}^br^input.input)*4 -->

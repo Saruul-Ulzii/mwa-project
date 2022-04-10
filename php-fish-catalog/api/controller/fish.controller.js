@@ -40,6 +40,7 @@ const getAll = function (req, res) {
   FishSchema.find()
     .skip(offset)
     .limit(count)
+    .sort({ _id: -1 })
     .exec((err, fishes) => _getAll(err, fishes, response, res));
 };
 
@@ -88,12 +89,13 @@ const _getFish = function (err, fish, res) {
 };
 
 const addOne = function (req, res) {
+  console.log(req.body);
   if (req.body && req.body.name) {
     let Fish = {
       name: req.body.name,
       family: req.body.family || "",
       food: req.body.food || "",
-      distribution: req.body.dists,
+      distribution: req.body.distribution,
     };
     FishSchema.create(Fish, (err, createdFish) =>
       _addFish(err, createdFish, res)
@@ -140,11 +142,11 @@ const _deleteFish = function (err, deletedFish, res) {
     message: {},
   };
   if (err) {
-    res.status = env.STATUS_CODE_500;
-    res.message = err;
+    response.status = env.STATUS_CODE_500;
+    response.message = err;
   } else {
-    res.status = env.STATUS_CODE_200;
-    res.message = deletedFish;
+    response.status = env.STATUS_CODE_200;
+    response.message = deletedFish;
   }
 
   res.status(response.status).json(response.message);
@@ -190,15 +192,14 @@ const update = function (req, res) {
 };
 
 function _updateFish(req, res, fish) {
-  if (req.body.name) {
-    fish.name = req.body.name;
-  }
-  if (req.body.family) {
-    fish.family = req.body.family;
-  }
-  if (req.body.food) {
-    fish.food = req.body.food;
-  }
+  const isFullUpdate = req.method == env.METHOD_PUT;
+
+  fish.name = isFullUpdate ? req.body.name : fish.name || req.body.name;
+  fish.family = isFullUpdate ? req.body.family : fish.family || req.body.family;
+  fish.food = isFullUpdate ? req.body.food : fish.name || req.body.food;
+  fish.distribution = isFullUpdate
+    ? req.body.distribution
+    : fish.distribution || req.body.distribution;
 
   fish.save(function (err, updatedFish) {
     let response = {

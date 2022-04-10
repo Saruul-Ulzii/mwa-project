@@ -1,0 +1,8 @@
+<button routerLink="/addFish">Add</button>
+<div class="fishes">
+  <div class="fish" *ngFor="let fish of fishes">
+    <button (click)="deleteFish(fish._id)">X</button>
+    <button routerLink="/fish/{{ fish._id }}">Edit</button>
+    {{ fish.name }}
+  </div>
+</div>

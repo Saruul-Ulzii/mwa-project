@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const DistributionSchema = mongoose.Schema({
-  name: String,
+  d_name: String,
   location: {},
 });
 
