@@ -25,14 +25,13 @@ export class EditFishComponent implements OnInit {
     setTimeout(() => {
       this.fishService.getFish(fishId).subscribe({
         next: (fish) => {
-          console.log('FISH TO EDIT', fish);
           this.fish = fish;
         },
         error: (err) => {
           console.log(err);
         },
         complete: () => {
-          console.log('completed');
+          console.log('getFish completed');
         },
       });
     }, 0);

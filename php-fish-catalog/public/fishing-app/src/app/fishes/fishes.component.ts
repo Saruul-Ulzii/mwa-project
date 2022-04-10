@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import { FishDataService } from '../fish-data.service';
+import { SearchService } from '../search.service';
 
 export class Fish {
   _id!: String;
@@ -18,14 +21,22 @@ export class Distribution {
 })
 export class FishesComponent implements OnInit {
   fishes!: Fish[];
-  constructor(private fd: FishDataService) {}
+  constructor(
+    private fd: FishDataService,
+    private route: ActivatedRoute,
+    private searchService: SearchService
+  ) {}
 
   ngOnInit(): void {
-    this.getFishes();
+    this.route.queryParams.subscribe((params) => {
+      const search = params[environment.SEARCH_QUERY_PARAM] || '';
+      this.searchService.changeSearch(search);
+      this.getFishes(search);
+    });
   }
 
-  getFishes() {
-    this.fd.getFishes().subscribe({
+  getFishes(search: string) {
+    this.fd.getFishes(search).subscribe({
       next: (fishes) => {
         this.fishes = fishes;
       },
@@ -42,7 +53,7 @@ export class FishesComponent implements OnInit {
     this.fd.deleteFish(fishId).subscribe({
       next: (result) => {
         console.log(result);
-        this.getFishes();
+        this.getFishes('');
       },
       error: (err) => {
         console.log(err);

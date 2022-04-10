@@ -3,4 +3,12 @@
     <li routerLink="/">Home</li>
     <li routerLink="/fishes">Fishes</li>
   </ul>
+  <form (ngSubmit)="search()">
+    <input
+      type="text"
+      name="searchtext"
+      placeholder="search"
+      [(ngModel)]="searchText"
+    />
+  </form>
 </nav>

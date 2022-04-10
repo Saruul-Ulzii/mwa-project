@@ -37,11 +37,38 @@ const getAll = function (req, res) {
     return;
   }
 
-  FishSchema.find()
+  if (req.query && req.query.search) {
+    _getAllWithCondition(req, res, offset, count);
+    return;
+  } else {
+    FishSchema.find()
+      .skip(offset)
+      .limit(count)
+      .sort({ _id: -1 })
+      .exec((err, fishes) => _getAll(err, fishes, response, res));
+  }
+};
+
+const _getAllWithCondition = function (req, res, offset, count) {
+  const search = req.query.search;
+  const query = {
+    $or: [
+      {
+        name: { $regex: search, $options: "i" },
+      },
+    ],
+  };
+  FishSchema.find(query)
     .skip(offset)
     .limit(count)
     .sort({ _id: -1 })
-    .exec((err, fishes) => _getAll(err, fishes, response, res));
+    .exec(function (err, fishes) {
+      if (err) {
+        res.status(env.STATUS_CODE_500).json(err);
+      } else {
+        res.status(env.STATUS_CODE_200).json(fishes);
+      }
+    });
 };
 
 const _getAll = function (err, fishes, response, res) {
@@ -89,7 +116,6 @@ const _getFish = function (err, fish, res) {
 };
 
 const addOne = function (req, res) {
-  console.log(req.body);
   if (req.body && req.body.name) {
     let Fish = {
       name: req.body.name,

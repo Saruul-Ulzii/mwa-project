@@ -4,13 +4,18 @@
 
 export const environment = {
   production: false,
+  REST_API_URL: 'http://localhost:3000/api',
+  GETALL_URL: '/fishes?search=',
+  GET_FISH_URL: '/fishes/',
   APP_TITLE: 'Fish category',
   PATH_FISHES: '/fishes',
+  PATH_DIST: '/fishes',
   FISHES: 'fishes',
   FISH_ID: 'fishId',
   PATH_MAIN: '',
   PATH_FISH_DETAIL: 'fish/:fishId',
   PATH_FISH_ADD: 'addFish',
+  SEARCH_QUERY_PARAM: 'search',
 };
 
 /*

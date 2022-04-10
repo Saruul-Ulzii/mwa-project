@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TemplateRef } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -11,6 +12,7 @@ import { NavComponent } from './nav/nav.component';
 import { FooterComponent } from './footer/footer.component';
 import { EditFishComponent } from './edit-fish/edit-fish.component';
 import { AddFishComponent } from './add-fish/add-fish.component';
+import { ErrorPageComponent } from './error-page/error-page.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,7 @@ import { AddFishComponent } from './add-fish/add-fish.component';
     FooterComponent,
     EditFishComponent,
     AddFishComponent,
+    ErrorPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,6 +46,10 @@ import { AddFishComponent } from './add-fish/add-fish.component';
       {
         path: 'fishes',
         component: FishesComponent,
+      },
+      {
+        path: '**',
+        component: ErrorPageComponent,
       },
     ]),
   ],
