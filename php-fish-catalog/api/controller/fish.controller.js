@@ -53,7 +53,7 @@ const _getAllWithCondition = function (req, res, offset, count) {
   const query = {
     $or: [
       {
-        name: { $regex: search, $options: "i" },
+        name: { $regex: search, $options: env.QUERY_OPTIONS },
       },
     ],
   };
