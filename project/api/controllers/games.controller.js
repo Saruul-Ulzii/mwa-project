@@ -31,6 +31,34 @@ const getAll = function (req, res) {
     });
 };
 
+_runGeoQuery = function (req, res, offset, count) {
+  const lng = parseFloat(req.query.lng);
+  const lat = parseFloat(req.query.lat);
+  const dist = parseInt(req.query.distance) || 10;
+  const point = { type: "Point", coordinates: [lng, lat] };
+  const query = {
+    "publisher.location.coordinates": {
+      $near: {
+        $geometry: point,
+        $minDistance: 0,
+        $maxDistance: dist,
+      },
+    },
+  };
+  GameSchema.find(query)
+    .skip(offset)
+    .limit(count)
+    .exec(function (err, games) {
+      if (err) {
+        console.log("Geo error");
+        res.status(500).json(err);
+      } else {
+        console.log("Geo result");
+        res.status(200).json(games);
+      }
+    });
+};
+
 const getOne = function (req, res) {
   if (req.params.gameId) {
     GameSchema.findById(req.params.gameId).exec(function (err, game) {

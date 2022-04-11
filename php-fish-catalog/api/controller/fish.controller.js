@@ -44,7 +44,6 @@ const getAll = function (req, res) {
     FishSchema.find()
       .skip(offset)
       .limit(count)
-      .sort({ _id: -1 })
       .exec((err, fishes) => _getAll(err, fishes, response, res));
   }
 };
@@ -61,7 +60,6 @@ const _getAllWithCondition = function (req, res, offset, count) {
   FishSchema.find(query)
     .skip(offset)
     .limit(count)
-    .sort({ _id: -1 })
     .exec(function (err, fishes) {
       if (err) {
         res.status(env.STATUS_CODE_500).json(err);
