@@ -1,0 +1,12 @@
+<form class="form-inline" (ngSubmit)="submit()">
+  <label for="username">Username</label>
+  <input type="text" [(ngModel)]="user.username" name="username" />
+  <label for="password">Password</label>
+  <input type="text" [(ngModel)]="user.password" name="pass" />
+  <button type="submit">Login</button>
+</form>
+
+<div class="logged">
+  <h2>Welcome {{ name }}</h2>
+  <button>Logout</button>
+</div>

@@ -16,6 +16,11 @@ const getAll = function (req, res) {
     );
   }
 
+  if (req.query && req.query.lat && req.query.lng) {
+    _runGeoQuery(req, res, offset, count);
+    return;
+  }
+
   GameSchema.find()
     .skip(offset)
     .limit(count)
@@ -36,7 +41,60 @@ _runGeoQuery = function (req, res, offset, count) {
   const lat = parseFloat(req.query.lat);
   const dist = parseInt(req.query.distance) || 10;
   const point = { type: "Point", coordinates: [lng, lat] };
+  // const query = {
+  //   $and: [
+  //     {
+  //       $or: [
+  //         {
+  //           title: {
+  //             $regex: req.query.title,
+  //             $options: "i",
+  //           },
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       $or: [
+  //         {
+  //           "publisher.location.coordinates": {
+  //             $near: {
+  //               $geometry: point,
+  //               $minDistance: 0,
+  //               $maxDistance: dist,
+  //             },
+  //           },
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // };
+
+  // const query = {
+  //   $or: [
+  //     {
+  //       title: {
+  //         $regex: req.query.title,
+  //         $options: "i",
+  //       },
+  //     },
+  //     {
+  //       "publisher.location.coordinates": {
+  //         $near: {
+  //           $geometry: point,
+  //           $minDistance: 0,
+  //           $maxDistance: dist,
+  //         },
+  //       },
+  //     },
+  //   ],
+  // };
+
+  // just find in title contains in their title and certain location
   const query = {
+    title: {
+      $regex: req.query.title,
+      $options: "i",
+    },
     "publisher.location.coordinates": {
       $near: {
         $geometry: point,

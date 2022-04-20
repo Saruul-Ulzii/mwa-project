@@ -1,32 +1,9 @@
+const gameRouter = require("./games");
+const userRouter = require("./users");
+
 const express = require("express");
 const router = express.Router();
-const gameController = require("../controllers/games.controller");
-const publisherController = require("../controllers/publishers.controller");
-const reviewController = require("../controllers/reviews.controller");
-
-router
-  .route(process.env.GAMES_URL)
-  .get(gameController.getAll)
-  .post(gameController.addOne);
-
-router
-  .route(process.env.GAME_BY_ID_URL)
-  .get(gameController.getOne)
-  .delete(gameController.deleteOne)
-  .put(gameController.updateOne)
-  .patch(gameController.updateOne);
-
-router
-  .route(process.env.GAME_PUBLISHER_URL)
-  .get(publisherController.getOne)
-  .put(publisherController.updateOne)
-  .patch(publisherController.updateOne);
-
-router.route(process.env.GAME_REVIEWS_URL).get(reviewController.getAll);
-router
-  .route(process.env.GAME_ONE_REVIEW_URL)
-  .get(reviewController.getOne)
-  .put(reviewController.updateOne)
-  .patch(reviewController.updateOne);
+router.use(process.env.GAMES_URL, gameRouter);
+router.use(process.env.USERS_URL, userRouter);
 
 module.exports = router;

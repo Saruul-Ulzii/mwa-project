@@ -1,21 +1,50 @@
-<div class="fishes" *ngIf="fishes && fishes.length > 0">
-  <div class="fish" *ngFor="let fish of fishes">
-    <div class="img">
+<div class="container">
+  <div class="row d-flex justify-content-end mb-4 mt-2">
+    <form (ngSubmit)="search()" class="col-sm-12 col-md-4 col-lg-4">
+      <div class="row">
+        <input
+          type="text"
+          class="col-8 form-control"
+          name="searchtext"
+          placeholder="enter keyword"
+          [(ngModel)]="searchText"
+        />
+        <button class="btn btn-outline-primary col-4" type="submit">
+          Search
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="row" *ngIf="fishes && fishes.length > 0">
+    <div
+      class="fish card col-xl-3 col-lg-4 col-md-6 col-12 p-1"
+      *ngFor="let fish of fishes"
+    >
       <img
+        class="card-img-top"
         src="https://media.istockphoto.com/photos/the-northern-pike-picture-id163751639?k=20&m=163751639&s=612x612&w=0&h=7wB8VBt05M6d69hTsmD1mlTRuwUR7osdNt91TlxYZXg="
         alt="Fish"
       />
-    </div>
-    <div class="bottom-part">
-      <fieldset>
-        <legend>Name: {{ fish.name }}</legend>
-        Family: {{ fish.family }}
-        <br />
-        Food: {{ fish.food }}
-        <button class="delete" (click)="deleteFish(fish._id)">X</button>
-        <button routerLink="/fish/{{ fish._id }}">Edit</button>
-      </fieldset>
+      <div class="card-body">
+        <fieldset>
+          <legend>Name: {{ fish.name }}</legend>
+          Family: {{ fish.family }}
+          <br />
+          Food: {{ fish.food }}
+          <div class="d-flex">
+            <button
+              class="btn btn-danger mr-auto p-1"
+              (click)="deleteFish(fish._id)"
+            >
+              Delete
+            </button>
+            <button class="btn btn-info p-2" routerLink="/fish/{{ fish._id }}">
+              Edit
+            </button>
+          </div>
+        </fieldset>
+      </div>
     </div>
   </div>
+  <div *ngIf="fishes && fishes.length == 0">No fishes found!</div>
 </div>
-<div *ngIf="fishes && fishes.length == 0">No fishes found!</div>

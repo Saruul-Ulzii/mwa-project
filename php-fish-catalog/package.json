@@ -7,7 +7,7 @@
     "start": "nodemon index.js",
     "startBackend": "npm start",
     "startFrontend": "cd public/fishing-app && npm start",
-    "startBoth": "npm-run-all --parallel startBackend startFrontend"
+    "both": "npm-run-all --parallel startBackend startFrontend"
   },
   "keywords": [
     "MongoDB",
@@ -18,6 +18,7 @@
   "author": "Saruul-Ulzii Sampilnorov",
   "license": "ISC",
   "dependencies": {
+    "@auth0/angular-jwt": "^5.0.2",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "mongoose": "^6.2.9",

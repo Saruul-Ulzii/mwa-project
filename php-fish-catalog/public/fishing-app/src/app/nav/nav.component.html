@@ -1,15 +1,31 @@
-<nav>
-  <ul>
-    <li routerLink="/">Home</li>
-    <li routerLink="/fishes">Fishes</li>
-    <li routerLink="/addFish">Add a fish</li>
-  </ul>
-  <form (ngSubmit)="search()">
-    <input
-      type="text"
-      name="searchtext"
-      placeholder="search"
-      [(ngModel)]="searchText"
-    />
-  </form>
-</nav>
+<div class="container">
+  <nav class="navbar nav nav-pills navbar-expand-lg navbar-light">
+    <ul>
+      <li
+        [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-item nav-link"
+        routerLink="/"
+      >
+        <h5>Home</h5>
+      </li>
+      <li
+        [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-item nav-link"
+        routerLink="/fishes"
+      >
+        <h5>Fishes</h5>
+      </li>
+      <li
+        [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="nav-item nav-link"
+        routerLink="/addFish"
+      >
+        <h5>Add a fish</h5>
+      </li>
+    </ul>
+    <app-login></app-login>
+  </nav>
+</div>

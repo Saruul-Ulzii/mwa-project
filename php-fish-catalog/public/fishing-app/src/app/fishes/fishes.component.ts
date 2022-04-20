@@ -20,6 +20,7 @@ export class Distribution {
   styleUrls: ['./fishes.component.css'],
 })
 export class FishesComponent implements OnInit {
+  searchText: string = '';
   fishes!: Fish[];
   constructor(
     private fd: FishDataService,
@@ -61,5 +62,10 @@ export class FishesComponent implements OnInit {
         console.log('fishes fetch completed');
       },
     });
+  }
+
+  search() {
+    this.getFishes(this.searchText);
+    this.searchService.changeSearch(this.searchText);
   }
 }

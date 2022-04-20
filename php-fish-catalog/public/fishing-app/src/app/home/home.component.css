@@ -1,0 +1,7 @@
+.body {
+  background: lightblue;
+}
+
+.carousel-item {
+  max-height: 800px !important;
+}

@@ -3,12 +3,13 @@ import { HttpClient } from '@angular/common/http';
 
 import { Game } from './games/games.component';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GamesDataService {
-  private baseUrl = 'http://localhost:9999/api';
+  private baseUrl = environment.rest_api_base_url;
   constructor(private http: HttpClient) {}
 
   getGames(): Observable<Game[]> {

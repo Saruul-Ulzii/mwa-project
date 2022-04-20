@@ -9,21 +9,7 @@ import { SearchService } from '../search.service';
   styleUrls: ['./nav.component.css'],
 })
 export class NavComponent implements OnInit {
-  searchText: String = '';
-  constructor(private route: Router, private searchService: SearchService) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    this.searchService.searchTextChange.subscribe((searchedText) => {
-      this.searchText = searchedText;
-    });
-  }
-
-  search() {
-    this.searchService.changeSearch(this.searchText);
-    this.route.navigate([environment.PATH_FISHES], {
-      queryParams: {
-        search: this.searchText,
-      },
-    });
-  }
+  ngOnInit(): void {}
 }

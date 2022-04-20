@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  rest_api_base_url: 'http://localhost:9999/api',
+  rest_api_users_base_url: 'http://localhost:9999/api',
+  token_storage_key: 'games_token',
 };
 
 /*

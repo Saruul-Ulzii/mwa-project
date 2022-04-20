@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TemplateRef } from '@angular/core';
+import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -13,6 +13,8 @@ import { FooterComponent } from './footer/footer.component';
 import { EditFishComponent } from './edit-fish/edit-fish.component';
 import { AddFishComponent } from './add-fish/add-fish.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import { ErrorPageComponent } from './error-page/error-page.component';
     EditFishComponent,
     AddFishComponent,
     ErrorPageComponent,
+    LoginComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,7 +57,10 @@ import { ErrorPageComponent } from './error-page/error-page.component';
       },
     ]),
   ],
-  providers: [],
+  providers: [
+    JwtHelperService,
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

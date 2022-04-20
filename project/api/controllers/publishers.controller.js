@@ -1,4 +1,3 @@
-const req = require("express/lib/request");
 const mongoose = require("mongoose");
 const GameSchema = mongoose.model(process.env.GAME_MODEL_NAME);
 
@@ -12,11 +11,11 @@ const getOne = function (req, res) {
       .select(process.env.GAMES_PUBLISHER)
       .exec(function (err, game) {
         if (err) {
-          res.status = 500;
+          response.status = 500;
           response.message = err;
         } else {
-          res.status = 200;
-          res.message = game;
+          response.status = 200;
+          response.message = game;
         }
         res.status(response.status).json(response.message);
       });

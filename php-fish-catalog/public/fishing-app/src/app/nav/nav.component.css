@@ -13,19 +13,27 @@ ul {
   text-transform: uppercase;
 }
 
+li h5 {
+  margin-bottom: unset;
+  margin-top: unset;
+}
+
 li {
   cursor: pointer;
   margin-left: 30px;
+  color: #1e3367;
 }
 
 li:hover {
-  color: #3968c1;
+  color: #0eb3d6;
 }
 
 li a {
   display: block;
-  color: white;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+}
+.nav-pills .nav-link.active {
+  background-color: #0eb3d6;
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { AuthService } from '../auth.service';
 
 import { GamesDataService } from '../game-data.service';
 
@@ -27,6 +28,9 @@ export class Game {
 })
 export class GamesComponent implements OnInit {
   games!: Game[];
+  get isLoggedIn() {
+    return this._auth.isLoggedIn;
+  }
   addGameForm = this.formBuilder.group({
     title: [''],
     price: [''],
@@ -38,7 +42,8 @@ export class GamesComponent implements OnInit {
   });
   constructor(
     private gamesService: GamesDataService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private _auth: AuthService
   ) {}
 
   ngOnInit(): void {

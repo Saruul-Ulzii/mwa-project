@@ -27,6 +27,7 @@ app.use(function (req, res, next) {
   console.log(req.method, req.url);
   next();
 });
+
 app.use(configs.API_URL, routes);
 
 app.get(configs.INDEX_URL, function (req, res) {

@@ -25,12 +25,12 @@ export class RegisterComponent implements OnInit {
   save() {
     console.log(this.user);
     this.userService.registerUser(this.user).subscribe({
-      next: (user) => {
+      next: (addedUser: any) => {
         this.hasSuccess = true;
         this.hasError = false;
-        console.log(user);
+        console.log(addedUser);
       },
-      error: (err) => {
+      error: (err: any) => {
         this.hasSuccess = false;
         this.hasError = true;
         console.log(err);

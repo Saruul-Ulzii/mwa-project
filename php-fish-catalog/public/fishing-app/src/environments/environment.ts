@@ -17,6 +17,7 @@ export const environment = {
   PATH_FISH_DETAIL: 'fish/:fishId',
   PATH_FISH_ADD: 'addFish',
   SEARCH_QUERY_PARAM: 'search',
+  TOKEN_STORAGE_KEY: 'games_token',
 };
 
 /*
