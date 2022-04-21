@@ -4,7 +4,7 @@ export const environment = {
   GETALL_URL: '/fishes?search=',
   COUNT_QUERY_PARAM: '&count=6',
   GET_FISH_URL: '/fishes/',
-  APP_TITLE: 'Fish category',
+  APP_TITLE: 'Fish category DEV',
   PATH_FISHES: '/fishes',
   PATH_DIST: '/fishes',
   FISHES: 'fishes',
@@ -13,4 +13,5 @@ export const environment = {
   PATH_FISH_DETAIL: 'fish/:fishId',
   PATH_FISH_ADD: 'addFish',
   SEARCH_QUERY_PARAM: 'search',
+  TOKEN_STORAGE_KEY: 'games_token',
 };

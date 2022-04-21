@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment';
+import { InfoMessage } from './login/login.component';
 
 @Injectable({
   providedIn: 'root',
@@ -19,21 +20,37 @@ export class AuthService {
     return this.#token;
   }
   set token(token) {
-    localStorage.setItem(environment.token_storage_key, token);
+    this.#token = token;
+    localStorage.setItem(environment.TOKEN_STORAGE_KEY, token);
     this.isLoggedIn = true;
   }
 
-  #name: string = '';
   get name() {
-    let name: string = 'unknown';
+    let name: string = 'Unknown';
+
     if (this.token) {
-      name = this.jwt.decodeToken(environment.token_storage_key) as string;
+      name = this.jwt.decodeToken(
+        localStorage.getItem(environment.TOKEN_STORAGE_KEY) as string
+      ).name;
     }
     return name;
   }
+
+  #infoMessage: InfoMessage = new InfoMessage(false, '');
+  set infoMessage(errorMessage: InfoMessage) {
+    this.#infoMessage = errorMessage;
+  }
+  get infoMessage() {
+    return this.#infoMessage;
+  }
   set name(name) {
-    localStorage.setItem(environment.token_storage_key, name);
+    localStorage.setItem(environment.TOKEN_STORAGE_KEY, name);
     this.isLoggedIn = true;
+  }
+
+  clearMessage() {
+    this.infoMessage.message = '';
+    this.#infoMessage.success = false;
   }
 
   deleteToken() {

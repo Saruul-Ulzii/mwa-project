@@ -17,15 +17,29 @@
       >
         <h5>Fishes</h5>
       </li>
-      <li
-        [routerLinkActive]="['active']"
-        [routerLinkActiveOptions]="{ exact: true }"
-        class="nav-item nav-link"
-        routerLink="/addFish"
-      >
-        <h5>Add a fish</h5>
-      </li>
+      <div class="profile" *ngIf="isLoggedIn">
+        <li
+          *ngIf="isLoggedIn"
+          [routerLinkActive]="['active']"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="nav-item nav-link"
+          routerLink="/profile"
+        >
+          <h5>Profile</h5>
+        </li>
+      </div>
     </ul>
     <app-login></app-login>
   </nav>
+  <div class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+    <span
+      class="d-flex justify-content-center toast hide"
+      [ngClass]="{
+        'bg-success': message.success,
+        'bg-danger': !message.success
+      }"
+    >
+      {{ message.message }}
+    </span>
+  </div>
 </div>

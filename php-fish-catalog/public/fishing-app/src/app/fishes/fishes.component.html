@@ -1,5 +1,15 @@
 <div class="container">
-  <div class="row d-flex justify-content-end mb-4 mt-2">
+  <div class="row d-flex justify-content-between mb-4 mt-2">
+    <div class="add-fish" *ngIf="isLoggedIn">
+      <span
+        [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="btn btn-primary"
+        routerLink="/addFish"
+      >
+        Add a fish
+      </span>
+    </div>
     <form (ngSubmit)="search()" class="col-sm-12 col-md-4 col-lg-4">
       <div class="row">
         <input
@@ -9,40 +19,41 @@
           placeholder="enter keyword"
           [(ngModel)]="searchText"
         />
-        <button class="btn btn-outline-primary col-4" type="submit">
-          Search
-        </button>
+        <span
+          class="input-group-text border-0"
+          id="search-addon"
+          (click)="search()"
+        >
+          <i class="fas fa-search"></i>
+        </span>
       </div>
     </form>
   </div>
   <div class="row" *ngIf="fishes && fishes.length > 0">
-    <div
-      class="fish card col-xl-3 col-lg-4 col-md-6 col-12 p-1"
-      *ngFor="let fish of fishes"
-    >
-      <img
-        class="card-img-top"
-        src="https://media.istockphoto.com/photos/the-northern-pike-picture-id163751639?k=20&m=163751639&s=612x612&w=0&h=7wB8VBt05M6d69hTsmD1mlTRuwUR7osdNt91TlxYZXg="
-        alt="Fish"
-      />
-      <div class="card-body">
-        <fieldset>
-          <legend>Name: {{ fish.name }}</legend>
-          Family: {{ fish.family }}
-          <br />
-          Food: {{ fish.food }}
-          <div class="d-flex">
-            <button
-              class="btn btn-danger mr-auto p-1"
-              (click)="deleteFish(fish._id)"
-            >
-              Delete
-            </button>
-            <button class="btn btn-info p-2" routerLink="/fish/{{ fish._id }}">
-              Edit
-            </button>
-          </div>
-        </fieldset>
+    <div class="col-xl-3 col-lg-4 col-md-6 col-12" *ngFor="let fish of fishes">
+      <div class="card m-1">
+        <div class="card-body">
+          <fieldset>
+            <legend>Name: {{ fish.name }}</legend>
+            Family name: {{ fish.family | uppercase }}
+            <br />
+            Food list: {{ fish.food | lowercase }}
+            <div class="d-flex" *ngIf="isLoggedIn">
+              <button
+                class="btn btn-danger mr-auto p-1"
+                (click)="deleteFish(fish._id)"
+              >
+                Delete
+              </button>
+              <button
+                class="btn btn-info p-2"
+                routerLink="/fish/{{ fish._id }}"
+              >
+                Edit
+              </button>
+            </div>
+          </fieldset>
+        </div>
       </div>
     </div>
   </div>

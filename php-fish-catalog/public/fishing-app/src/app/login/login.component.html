@@ -1,12 +1,41 @@
-<form class="form-inline" (ngSubmit)="submit()">
-  <label for="username">Username</label>
-  <input type="text" [(ngModel)]="user.username" name="username" />
-  <label for="password">Password</label>
-  <input type="text" [(ngModel)]="user.password" name="pass" />
-  <button type="submit">Login</button>
-</form>
+<div class="login" *ngIf="!isLoggedIn" style="width: 600px">
+  <form class="form-inline" (ngSubmit)="submit()">
+    <div class="input-group" style="width: 260px">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="">Username</span>
+      </div>
+      <input
+        class="form-control"
+        type="text"
+        [(ngModel)]="user.username"
+        name="username"
+      />
+    </div>
+    <div class="input-group" style="width: 180px">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="">Password</span>
+      </div>
+      <input
+        class="form-control"
+        type="password"
+        [(ngModel)]="user.password"
+        name="pass"
+      />
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
 
-<div class="logged">
-  <h2>Welcome {{ name }}</h2>
-  <button>Logout</button>
+    <span
+      class="input-group-text border-0 btn btn-primary ml-2"
+      routerLink="/register"
+    >
+      <i class="fas fa-user-plus"></i>
+    </span>
+  </form>
+</div>
+
+<div class="logged" *ngIf="isLoggedIn">
+  <div class="row">
+    <p class="m-auto pr-4">Welcome {{ name }}</p>
+    <button class="btn btn-info" (click)="logout()">Logout</button>
+  </div>
 </div>

@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from 'src/environments/environment';
+import { AuthService } from '../auth.service';
 import { FishDataService } from '../fish-data.service';
 import { SearchService } from '../search.service';
 
 export class Fish {
-  _id!: String;
-  name!: String;
-  family!: String;
-  food!: String;
+  _id!: string;
+  name!: string;
+  family!: string;
+  food!: string;
   distribution: Distribution[] = [];
 }
 export class Distribution {
-  d_name!: String;
+  d_name!: string;
 }
 @Component({
   selector: 'app-fishes',
@@ -22,10 +23,16 @@ export class Distribution {
 export class FishesComponent implements OnInit {
   searchText: string = '';
   fishes!: Fish[];
+
+  get isLoggedIn() {
+    return this._auth.isLoggedIn;
+  }
+
   constructor(
     private fd: FishDataService,
     private route: ActivatedRoute,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private _auth: AuthService
   ) {}
 
   ngOnInit(): void {

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { AuthService } from './auth.service';
 import { Distribution, Fish } from './fishes/fishes.component';
 
 @Injectable({
@@ -9,7 +10,7 @@ import { Distribution, Fish } from './fishes/fishes.component';
 })
 export class FishDataService {
   base_url: String = environment.REST_API_URL;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private _auth: AuthService) {}
 
   getFishes(search: string): Observable<Fish[]> {
     return this.http.get<Fish[]>(

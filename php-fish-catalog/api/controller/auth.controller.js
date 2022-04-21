@@ -1,8 +1,9 @@
 const jwt = require("jsonwebtoken");
-const utl = require("util");
+const util = require("util");
 
 authenticate = function (req, res, next) {
   const headerExists = req.headers.authorization;
+  console.log("auth", req.headers.authorization);
   const response = {
     status: 201,
     message: {},
@@ -11,14 +12,15 @@ authenticate = function (req, res, next) {
   if (headerExists) {
     const token = req.headers.authorization.split(" ")[1];
     const jwtPromise = util.promisify(jwt.verify, { context: jwt });
-
     jwtPromise(token, process.env.JWT_PRIVATE_KEY)
       .then(() => next())
-      .catch((err) => {
+      .catch(() => {
         _handleAuthError(res, response);
       });
   } else {
-    this._sendResponse(res, response);
+    response.status = process.env.STATUS_CODE_401;
+    response.message = { message: process.env.TOKEN_EMPTY_ERROR };
+    _sendResponse(res, response);
   }
 };
 
@@ -27,9 +29,9 @@ _sendResponse = function (res, response) {
 };
 
 _handleAuthError = function (res, response) {
-  response.status = process.env.CODE_401;
-  response.message = { message: "Unauthorized" };
-  this._sendResponse(res, response);
+  response.status = process.env.STATUS_CODE_401;
+  response.message = { message: process.env.UNAUTHORIZED };
+  _sendResponse(res, response);
 };
 
 module.exports = {

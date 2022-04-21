@@ -38,17 +38,25 @@ const getAll = function (req, res) {
   }
 
   if (req.query && req.query.search) {
-    _getAllWithCondition(req, res, offset, count);
+    _getAllWithCondition(req, res, offset, count, response);
     return;
   } else {
     FishSchema.find()
       .skip(offset)
       .limit(count)
-      .exec((err, fishes) => _getAll(err, fishes, response, res));
+      .then((fishes) => {
+        _onSuccessResult(fishes, response);
+      })
+      .catch((err) => {
+        _handleError(err, response);
+      })
+      .finally(() => {
+        _sendResponse(res, response);
+      });
   }
 };
 
-const _getAllWithCondition = function (req, res, offset, count) {
+const _getAllWithCondition = function (req, res, offset, count, response) {
   const search = req.query.search;
   const query = {
     $or: [
@@ -60,60 +68,63 @@ const _getAllWithCondition = function (req, res, offset, count) {
   FishSchema.find(query)
     .skip(offset)
     .limit(count)
-    .exec(function (err, fishes) {
-      if (err) {
-        res.status(env.STATUS_CODE_500).json(err);
-      } else {
-        res.status(env.STATUS_CODE_200).json(fishes);
-      }
+    .then((fishes) => {
+      _onSuccessResult(fishes, response);
+    })
+    .catch((err) => {
+      _handleError(err, response);
+    })
+    .finally(() => {
+      _sendResponse(res, response);
     });
 };
 
-const _getAll = function (err, fishes, response, res) {
-  if (err) {
-    response.status = env.STATUS_CODE_500;
-    response.message = err;
-  } else {
-    response.status = env.STATUS_CODE_200;
-    response.message = fishes;
-  }
+_onSuccessResult = function (result, response) {
+  response.status = process.env.STATUS_CODE_200;
+  response.message = result;
+};
 
+_sendResponse = function (res, response) {
   res.status(response.status).json(response.message);
+};
+
+_handleError = function (err, response) {
+  response.status = process.env.STATUS_CODE_500;
+  response.message = err;
 };
 
 const getOne = function (req, res) {
   const fishId = req.params.fishId;
-  if (mongoose.isValidObjectId(fishId)) {
-    FishSchema.findById(fishId).exec((err, fish) => _getFish(err, fish, res));
-  } else {
-    res
-      .status(env.STATUS_CODE_400)
-      .json({ Message: env.INVALID_FISHID_MESSAGE });
-  }
-};
-
-const _getFish = function (err, fish, res) {
   let response = {
     status: env.STATUS_CODE_200,
     message: {},
   };
-  if (err) {
-    response.status = env.STATUS_CODE_500;
-    response.message = err;
-  } else {
-    if (fish) {
-      response.status = env.STATUS_CODE_200;
-      response.message = fish;
-    } else {
-      response.status = env.STATUS_CODE_404;
-      response.message = { Message: env.FISH_NOT_FOUND_MESSAGE };
-    }
-  }
 
-  res.status(response.status).json(response.message);
+  if (mongoose.isValidObjectId(fishId)) {
+    FishSchema.findById(fishId)
+      .then((fish) => {
+        _onSuccessResult(fish, response);
+      })
+      .catch((err) => {
+        _handleError(err, response);
+      })
+      .finally(() => {
+        _sendResponse(res, response);
+      });
+  } else {
+    response.status = env.STATUS_CODE_400;
+    response.message = { Message: env.INVALID_FISHID_MESSAGE };
+
+    this._sendResponse(res, response);
+  }
 };
 
 const addOne = function (req, res) {
+  let response = {
+    status: env.STATUS_CODE_200,
+    message: {},
+  };
+
   if (req.body && req.body.name) {
     let Fish = {
       name: req.body.name,
@@ -121,63 +132,55 @@ const addOne = function (req, res) {
       food: req.body.food || "",
       distribution: req.body.distribution,
     };
-    FishSchema.create(Fish, (err, createdFish) =>
-      _addFish(err, createdFish, res)
-    );
+    FishSchema.create(Fish)
+      .then((createdFish) => {
+        _onSuccessResult(createdFish, response);
+      })
+      .catch((err) => {
+        _handleError(err, response);
+      })
+      .finally(() => {
+        _sendResponse(res, response);
+      });
   } else {
-    res
-      .status(env.STATUS_CODE_400)
-      .json({ Message: env.NAME_REQUIRED_MESSAGE });
-  }
-};
+    response.status = env.STATUS_CODE_400;
+    response.message = { Message: env.NAME_REQUIRED_MESSAGE };
 
-const _addFish = function (err, createdFish, res) {
-  let response = {
-    status: env.STATUS_CODE_200,
-    message: {},
-  };
-  if (err) {
-    response.status = env.STATUS_CODE_500;
-    response.message = err;
-  } else {
-    response.status = env.STATUS_CODE_200;
-    response.message = createdFish;
+    this._sendResponse(res, response);
   }
-
-  res.status(response.status).json(response.message);
 };
 
 const deleteOne = function (req, res) {
   const fishId = req.params.fishId;
-  if (mongoose.isValidObjectId(fishId)) {
-    FishSchema.deleteOne({ _id: req.params.fishId }).exec((err, fish) =>
-      _deleteFish(err, fish, res)
-    );
-  } else {
-    res
-      .status(env.STATUS_CODE_400)
-      .json({ Message: env.INVALID_FISHID_MESSAGE });
-  }
-};
-
-const _deleteFish = function (err, deletedFish, res) {
   let response = {
     status: env.STATUS_CODE_200,
     message: {},
   };
-  if (err) {
-    response.status = env.STATUS_CODE_500;
-    response.message = err;
+  if (mongoose.isValidObjectId(fishId)) {
+    FishSchema.deleteOne({ _id: req.params.fishId })
+      .then((result) => {
+        _onSuccessResult(result, response);
+      })
+      .catch((err) => {
+        _handleError(err, response);
+      })
+      .finally(() => {
+        _sendResponse(res, response);
+      });
   } else {
-    response.status = env.STATUS_CODE_200;
-    response.message = deletedFish;
-  }
+    response.status = env.STATUS_CODE_400;
+    response.message = { Message: env.INVALID_FISHID_MESSAGE };
 
-  res.status(response.status).json(response.message);
+    this._sendResponse(res, response);
+  }
 };
 
 const update = function (req, res) {
   const fishId = req.params.fishId;
+  let response = {
+    status: env.STATUS_CODE_200,
+    message: {},
+  };
 
   if (req.body.name == "") {
     res
@@ -187,27 +190,21 @@ const update = function (req, res) {
   }
 
   if (mongoose.isValidObjectId(fishId)) {
-    FishSchema.findById(fishId).exec(function (err, fish) {
-      let response = {
-        status: env.STATUS_CODE_200,
-        message: {},
-      };
-      if (err) {
-        response.status = env.STATUS_CODE_500;
-        response.message = err;
-
-        res.status(response.status).json(response.message);
-      } else {
+    FishSchema.findById(fishId)
+      .then((fish) => {
         if (fish) {
-          _updateFish(req, res, fish);
+          _updateFish(req, res, fish, response);
         } else {
           response.status = env.STATUS_CODE_404;
           response.message = { Message: env.FISH_NOT_FOUND_MESSAGE };
 
-          res.status(response.status).json(response.message);
+          _sendResponse(res, response);
         }
-      }
-    });
+      })
+      .catch((err) => {
+        _handleError(err, response);
+        _sendResponse(res, response);
+      });
   } else {
     res
       .status(env.STATUS_CODE_400)
@@ -215,31 +212,27 @@ const update = function (req, res) {
   }
 };
 
-function _updateFish(req, res, fish) {
+function _updateFish(req, res, fish, response) {
   const isFullUpdate = req.method == env.METHOD_PUT;
 
-  fish.name = isFullUpdate ? req.body.name : fish.name || req.body.name;
-  fish.family = isFullUpdate ? req.body.family : fish.family || req.body.family;
-  fish.food = isFullUpdate ? req.body.food : fish.name || req.body.food;
+  fish.name = isFullUpdate ? req.body.name : req.body.name || fish.name;
+  fish.family = isFullUpdate ? req.body.family : req.body.family || fish.family;
+  fish.food = isFullUpdate ? req.body.food : req.body.food || fish.food;
   fish.distribution = isFullUpdate
     ? req.body.distribution
-    : fish.distribution || req.body.distribution;
+    : req.body.distribution || fish.distribution;
 
-  fish.save(function (err, updatedFish) {
-    let response = {
-      status: env.STATUS_CODE_200,
-      message: {},
-    };
-    if (err) {
-      response.status = env.STATUS_CODE_500;
-      response.message = err;
-    } else {
-      response.status = env.STATUS_CODE_200;
-      response.message = updatedFish;
-    }
-
-    res.status(response.status).json(response.message);
-  });
+  fish
+    .save()
+    .then((updatedFish) => {
+      _onSuccessResult(updatedFish, response);
+    })
+    .catch((err) => {
+      _handleError(err, response);
+    })
+    .finally(() => {
+      _sendResponse(res, response);
+    });
 }
 
 module.exports = {

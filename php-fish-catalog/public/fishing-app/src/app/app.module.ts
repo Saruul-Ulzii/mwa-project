@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
@@ -15,6 +15,8 @@ import { AddFishComponent } from './add-fish/add-fish.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { ProfileComponent } from './profile/profile.component';
+import { JwtInterceptor } from './utils/JwtInterceptor';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,7 @@ import { RegisterComponent } from './register/register.component';
     ErrorPageComponent,
     LoginComponent,
     RegisterComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,6 +55,14 @@ import { RegisterComponent } from './register/register.component';
         component: FishesComponent,
       },
       {
+        path: 'register',
+        component: RegisterComponent,
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+      },
+      {
         path: '**',
         component: ErrorPageComponent,
       },
@@ -59,6 +70,7 @@ import { RegisterComponent } from './register/register.component';
   ],
   providers: [
     JwtHelperService,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
   ],
   bootstrap: [AppComponent],
