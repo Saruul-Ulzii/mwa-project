@@ -1,8 +1,10 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { FishDataService } from 'src/app/services/fish-data.service';
+import { MessageService } from 'src/app/services/message.service';
+import { InfoMessage } from 'src/app/user/login/login.component';
 import { environment } from 'src/environments/environment';
-import { FishDataService } from '../fish-data.service';
 import { Distribution, Fish } from '../fishes/fishes.component';
 
 @Component({
@@ -14,9 +16,9 @@ export class EditFishComponent implements OnInit {
   fish!: Fish;
 
   constructor(
-    private fb: FormBuilder,
     private fishService: FishDataService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private _msg: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -40,9 +42,17 @@ export class EditFishComponent implements OnInit {
   save() {
     this.fishService.updateFish(this.fish).subscribe({
       next: (updatedFish) => {
+        this._msg.infoMessage = new InfoMessage(
+          true,
+          environment.FISH_UPDATED_SUCCESS
+        );
         console.log('Updated', updatedFish);
       },
       error: (err) => {
+        this._msg.infoMessage = new InfoMessage(
+          false,
+          environment.FISH_UPDATE_FAILED
+        );
         console.log(err);
       },
       complete: () => {

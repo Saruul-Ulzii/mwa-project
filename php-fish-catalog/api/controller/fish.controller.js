@@ -9,7 +9,7 @@ const getAll = function (req, res) {
   const maxCount = parseInt(env.FETCH_COUNT_MAX_VALUE);
 
   let response = {
-    status: env.STATUS_CODE_200,
+    status: env.RESPONSE_OK_200,
     message: {},
   };
 
@@ -21,18 +21,18 @@ const getAll = function (req, res) {
   }
 
   if (isNaN(count) || isNaN(offset)) {
-    response.status = env.STATUS_CODE_400;
+    response.status = env.RESPONSE_BAD_REQUEST_400;
     response.message = { Message: env.OFFSET_AND_COUNT_DIGITS_MESSAGE };
   }
 
   if (count > maxCount) {
-    response.status = env.STATUS_CODE_400;
+    response.status = env.RESPONSE_BAD_REQUEST_400;
     response.message = {
       Message: `${env.COUNT_LESS_MESSAGE} ${env.FETCH_COUNT_MAX_VALUE}`,
     };
   }
 
-  if (response.status !== env.STATUS_CODE_200) {
+  if (response.status !== env.RESPONSE_OK_200) {
     res.status(response.status).json(response.message);
     return;
   }
@@ -80,7 +80,7 @@ const _getAllWithCondition = function (req, res, offset, count, response) {
 };
 
 _onSuccessResult = function (result, response) {
-  response.status = process.env.STATUS_CODE_200;
+  response.status = process.env.RESPONSE_OK_200;
   response.message = result;
 };
 
@@ -89,14 +89,14 @@ _sendResponse = function (res, response) {
 };
 
 _handleError = function (err, response) {
-  response.status = process.env.STATUS_CODE_500;
+  response.status = process.env.RESPONSE_SERVER_ERROR_500;
   response.message = err;
 };
 
 const getOne = function (req, res) {
   const fishId = req.params.fishId;
   let response = {
-    status: env.STATUS_CODE_200,
+    status: env.RESPONSE_OK_200,
     message: {},
   };
 
@@ -112,7 +112,7 @@ const getOne = function (req, res) {
         _sendResponse(res, response);
       });
   } else {
-    response.status = env.STATUS_CODE_400;
+    response.status = env.RESPONSE_BAD_REQUEST_400;
     response.message = { Message: env.INVALID_FISHID_MESSAGE };
 
     this._sendResponse(res, response);
@@ -121,7 +121,7 @@ const getOne = function (req, res) {
 
 const addOne = function (req, res) {
   let response = {
-    status: env.STATUS_CODE_200,
+    status: env.RESPONSE_CREATED_201,
     message: {},
   };
 
@@ -143,7 +143,7 @@ const addOne = function (req, res) {
         _sendResponse(res, response);
       });
   } else {
-    response.status = env.STATUS_CODE_400;
+    response.status = env.RESPONSE_BAD_REQUEST_400;
     response.message = { Message: env.NAME_REQUIRED_MESSAGE };
 
     this._sendResponse(res, response);
@@ -153,7 +153,7 @@ const addOne = function (req, res) {
 const deleteOne = function (req, res) {
   const fishId = req.params.fishId;
   let response = {
-    status: env.STATUS_CODE_200,
+    status: env.RESPONSE_OK_200,
     message: {},
   };
   if (mongoose.isValidObjectId(fishId)) {
@@ -168,7 +168,7 @@ const deleteOne = function (req, res) {
         _sendResponse(res, response);
       });
   } else {
-    response.status = env.STATUS_CODE_400;
+    response.status = env.RESPONSE_BAD_REQUEST_400;
     response.message = { Message: env.INVALID_FISHID_MESSAGE };
 
     this._sendResponse(res, response);
@@ -178,13 +178,13 @@ const deleteOne = function (req, res) {
 const update = function (req, res) {
   const fishId = req.params.fishId;
   let response = {
-    status: env.STATUS_CODE_200,
+    status: env.RESPONSE_OK_200,
     message: {},
   };
 
   if (req.body.name == "") {
     res
-      .status(env.STATUS_CODE_200)
+      .status(env.RESPONSE_OK_200)
       .json({ Message: env.NAME_REQUIRED_MESSAGE });
     return;
   }
@@ -195,7 +195,7 @@ const update = function (req, res) {
         if (fish) {
           _updateFish(req, res, fish, response);
         } else {
-          response.status = env.STATUS_CODE_404;
+          response.status = env.RESPONSE_NOT_FOUND_404;
           response.message = { Message: env.FISH_NOT_FOUND_MESSAGE };
 
           _sendResponse(res, response);
@@ -207,7 +207,7 @@ const update = function (req, res) {
       });
   } else {
     res
-      .status(env.STATUS_CODE_400)
+      .status(env.RESPONSE_BAD_REQUEST_400)
       .json({ Message: env.INVALID_FISHID_MESSAGE });
   }
 };

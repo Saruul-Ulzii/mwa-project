@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { throwIfEmpty } from 'rxjs';
+import { AuthService } from 'src/app/services/auth.service';
+import { FishDataService } from 'src/app/services/fish-data.service';
+import { SearchService } from 'src/app/services/search.service';
 import { environment } from 'src/environments/environment';
-import { AuthService } from '../auth.service';
-import { FishDataService } from '../fish-data.service';
-import { SearchService } from '../search.service';
 
 export class Fish {
   _id!: string;
@@ -15,6 +16,10 @@ export class Fish {
 export class Distribution {
   d_name!: string;
 }
+export class MessageResult {
+  message!: {};
+}
+export class RequestObject {}
 @Component({
   selector: 'app-fishes',
   templateUrl: './fishes.component.html',
@@ -23,9 +28,16 @@ export class Distribution {
 export class FishesComponent implements OnInit {
   searchText: string = '';
   fishes!: Fish[];
+  offset: number = 0;
 
   get isLoggedIn() {
     return this._auth.isLoggedIn;
+  }
+
+  get isPageable() {
+    return (
+      this.fishes && this.fishes.length > environment.COUNT_DEFAULT_VALUE - 1
+    );
   }
 
   constructor(
@@ -43,8 +55,8 @@ export class FishesComponent implements OnInit {
     });
   }
 
-  getFishes(search: string) {
-    this.fd.getFishes(search).subscribe({
+  getFishes(search: string = '') {
+    this.fd.getFishes(search, this.offset).subscribe({
       next: (fishes) => {
         this.fishes = fishes;
       },
@@ -60,7 +72,8 @@ export class FishesComponent implements OnInit {
   deleteFish(fishId: String) {
     this.fd.deleteFish(fishId).subscribe({
       next: (result) => {
-        this.getFishes('');
+        console.log('delete result', result);
+        this.getFishes();
       },
       error: (err) => {
         console.log(err);
@@ -74,5 +87,16 @@ export class FishesComponent implements OnInit {
   search() {
     this.getFishes(this.searchText);
     this.searchService.changeSearch(this.searchText);
+  }
+
+  prev() {
+    this.offset -= environment.COUNT_DEFAULT_VALUE;
+    this.offset = this.offset < 0 ? 0 : this.offset;
+    this.getFishes();
+  }
+
+  next() {
+    this.offset += environment.COUNT_DEFAULT_VALUE;
+    this.getFishes();
   }
 }

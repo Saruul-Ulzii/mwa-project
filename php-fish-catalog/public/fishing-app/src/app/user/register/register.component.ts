@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserDataService } from '../user-data.service';
+import { UserDataService } from 'src/app/services/user-data.service';
 
 export class Credentials {
   username!: string;
@@ -25,12 +25,12 @@ export class RegisterComponent implements OnInit {
   save() {
     console.log(this.user);
     this.userService.registerUser(this.user).subscribe({
-      next: (addedUser: any) => {
+      next: (addedUser) => {
         this.hasSuccess = true;
         this.hasError = false;
         console.log(addedUser);
       },
-      error: (err: any) => {
+      error: (err) => {
         this.hasSuccess = false;
         this.hasError = true;
         console.log(err);

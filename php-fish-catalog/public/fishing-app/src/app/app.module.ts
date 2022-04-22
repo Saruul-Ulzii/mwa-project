@@ -6,17 +6,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { FishesComponent } from './fishes/fishes.component';
-import { NavComponent } from './nav/nav.component';
-import { FooterComponent } from './footer/footer.component';
-import { EditFishComponent } from './edit-fish/edit-fish.component';
-import { AddFishComponent } from './add-fish/add-fish.component';
-import { ErrorPageComponent } from './error-page/error-page.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
-import { ProfileComponent } from './profile/profile.component';
+import { AddFishComponent } from './fish/add-fish/add-fish.component';
+import { ErrorPageComponent } from './main/error-page/error-page.component';
+import { LoginComponent } from './user/login/login.component';
+import { RegisterComponent } from './user/register/register.component';
 import { JwtInterceptor } from './utils/JwtInterceptor';
+import { EditFishComponent } from './fish/edit-fish/edit-fish.component';
+import { FishesComponent } from './fish/fishes/fishes.component';
+import { ProfileComponent } from './user/profile/profile.component';
+import { FooterComponent } from './main/footer/footer.component';
+import { HomeComponent } from './main/home/home.component';
+import { NavComponent } from './main/nav/nav.component';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -39,31 +40,31 @@ import { JwtInterceptor } from './utils/JwtInterceptor';
     ReactiveFormsModule,
     RouterModule.forRoot([
       {
-        path: '',
+        path: environment.PATH_HOME,
         component: HomeComponent,
       },
       {
-        path: 'fish/:fishId',
+        path: environment.PATH_EDIT_FISH,
         component: EditFishComponent,
       },
       {
-        path: 'addFish',
+        path: environment.PATH_ADD_FISH,
         component: AddFishComponent,
       },
       {
-        path: 'fishes',
+        path: environment.PATH_FISHS,
         component: FishesComponent,
       },
       {
-        path: 'register',
+        path: environment.PATH_REGISTER,
         component: RegisterComponent,
       },
       {
-        path: 'profile',
+        path: environment.PATH_PROFILE,
         component: ProfileComponent,
       },
       {
-        path: '**',
+        path: environment.PATH_ERROR,
         component: ErrorPageComponent,
       },
     ]),

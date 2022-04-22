@@ -1,13 +1,12 @@
 const env = process.env;
 
-const { response } = require("express");
 const mongoose = require("mongoose");
 const FishSchema = mongoose.model(process.env.FISH_MODEL);
 
 const getAll = function (req, res) {
   const fishId = req.params.fishId;
   const response = {
-    status: env.STATUS_CODE_200,
+    status: env.RESPONSE_OK_200,
     message: {},
   };
 
@@ -24,7 +23,7 @@ const getAll = function (req, res) {
         _sendResponse(res, response);
       });
   } else {
-    response.status = env.STATUS_CODE_400;
+    response.status = env.RESPONSE_BAD_REQUEST_400;
     response.message = { Message: env.INVALID_FISHID_MESSAGE };
 
     this._sendResponse(res, response);
@@ -32,7 +31,7 @@ const getAll = function (req, res) {
 };
 
 _onSuccessResult = function (result, response) {
-  response.status = process.env.STATUS_CODE_200;
+  response.status = process.env.RESPONSE_OK_200;
   response.message = result;
 };
 
@@ -41,7 +40,7 @@ _sendResponse = function (res, response) {
 };
 
 _handleError = function (err, response) {
-  response.status = process.env.STATUS_CODE_500;
+  response.status = process.env.RESPONSE_SERVER_ERROR_500;
   response.message = err;
 };
 
@@ -50,7 +49,7 @@ const getOne = function (req, res) {
   const distId = req.params.distId;
 
   const response = {
-    status: env.STATUS_CODE_200,
+    status: env.RESPONSE_OK_200,
     message: {},
   };
 
@@ -66,7 +65,7 @@ const getOne = function (req, res) {
         _sendResponse(res, response);
       });
   } else {
-    response.status = env.STATUS_CODE_400;
+    response.status = env.RESPONSE_BAD_REQUEST_400;
     response.message = { Message: env.FISHID_AND_DIST_ID_REQUIRED_MESSAGE };
 
     this._sendResponse(res, response);
@@ -74,19 +73,19 @@ const getOne = function (req, res) {
 };
 
 _onSuccessDist = function (fish, distId, response) {
-  response.status = process.env.STATUS_CODE_200;
+  response.status = process.env.RESPONSE_OK_200;
   response.message = fish.distribution.id(distId);
 };
 
 const addOne = function (req, res) {
   const fishId = req.params.fishId;
   const response = {
-    status: env.STATUS_CODE_200,
+    status: env.RESPONSE_CREATED_201,
     message: {},
   };
 
   if (!req.body.name) {
-    response.status = env.STATUS_CODE_400;
+    response.status = env.RESPONSE_BAD_REQUEST_400;
     response.message = { Message: env.DIST_NAME_REQUIRED_MESSAGE };
 
     this._sendResponse(res, response);
@@ -106,7 +105,7 @@ const addOne = function (req, res) {
         _sendResponse(res, response);
       });
   } else {
-    response.status = env.STATUS_CODE_500;
+    response.status = env.RESPONSE_SERVER_ERROR_500;
     response.message = { Message: env.INVALID_FISHID_MESSAGE };
 
     this._sendResponse(res, response);
@@ -128,7 +127,7 @@ const _addDistToFish = function (fish, newDist, res, response) {
         _sendResponse(res, response);
       });
   } else {
-    response.status = env.STATUS_CODE_404;
+    response.status = env.RESPONSE_NOT_FOUND_404;
     response.message = { Message: env.FISH_NOT_FOUND_MESSAGE };
 
     this._sendResponse(res, response);
@@ -139,7 +138,7 @@ const deleteOne = function (req, res) {
   const fishId = req.params.fishId;
   const distId = req.params.distId;
   const response = {
-    status: env.STATUS_CODE_200,
+    status: env.RESPONSE_OK_200,
     message: {},
   };
 
@@ -153,7 +152,7 @@ const deleteOne = function (req, res) {
         _sendResponse(res, response);
       });
   } else {
-    response.status = env.STATUS_CODE_400;
+    response.status = env.RESPONSE_BAD_REQUEST_400;
     response.message = { Message: env.INVALID_FISH_AND_DISTID_MESSAGE };
 
     this._sendResponse(res, response);
@@ -176,13 +175,13 @@ const _deleteDist = function (fish, distId, res, response) {
           _sendResponse(res, response);
         });
     } else {
-      response.status = env.STATUS_CODE_404;
+      response.status = env.RESPONSE_NOT_FOUND_404;
       response.message = { Message: env.DIST_NOT_FOUND_MESSAGE };
 
       this._sendResponse(res, response);
     }
   } else {
-    response.status = env.STATUS_CODE_404;
+    response.status = env.RESPONSE_NOT_FOUND_404;
     response.message = { Message: env.FISH_NOT_FOUND_MESSAGE };
 
     this._sendResponse(res, response);
@@ -193,13 +192,13 @@ const update = function (req, res) {
   const fishId = req.params.fishId;
   const distId = req.params.distId;
   const response = {
-    status: env.STATUS_CODE_200,
+    status: env.RESPONSE_OK_200,
     message: {},
   };
 
   if (req.body.name == "") {
     res
-      .status(env.STATUS_CODE_400)
+      .status(env.RESPONSE_BAD_REQUEST_400)
       .json({ Message: env.DIST_NAME_REQUIRED_MESSAGE });
     return;
   }
@@ -215,7 +214,7 @@ const update = function (req, res) {
         _sendResponse(res, response);
       });
   } else {
-    response.status = env.STATUS_CODE_400;
+    response.status = env.RESPONSE_BAD_REQUEST_400;
     response.message = { Message: env.FISHID_AND_DIST_ID_REQUIRED_MESSAGE };
 
     this._sendResponse(res, response);
@@ -239,13 +238,13 @@ const _updateDist = function (fish, distId, req, res, response) {
           _sendResponse(res, response);
         });
     } else {
-      response.status = env.STATUS_CODE_404;
+      response.status = env.RESPONSE_NOT_FOUND_404;
       response.message = { Message: env.DIST_NOT_FOUND_MESSAGE };
 
       this._sendResponse(res, response);
     }
   } else {
-    response.status = env.STATUS_CODE_404;
+    response.status = env.RESPONSE_NOT_FOUND_404;
     response.message = { Message: env.FISH_NOT_FOUND_MESSAGE };
 
     this._sendResponse(res, response);

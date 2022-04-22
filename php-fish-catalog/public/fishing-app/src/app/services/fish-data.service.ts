@@ -2,22 +2,29 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Fish, MessageResult } from '../fish/fishes/fishes.component';
 import { AuthService } from './auth.service';
-import { Distribution, Fish } from './fishes/fishes.component';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FishDataService {
   base_url: String = environment.REST_API_URL;
-  constructor(private http: HttpClient, private _auth: AuthService) {}
+  constructor(private http: HttpClient) {}
 
-  getFishes(search: string): Observable<Fish[]> {
+  getFishes(
+    search: string,
+    offset: number = 0,
+    count: number = environment.COUNT_DEFAULT_VALUE
+  ): Observable<Fish[]> {
     return this.http.get<Fish[]>(
       this.base_url +
         environment.GETALL_URL +
         search +
-        environment.COUNT_QUERY_PARAM
+        environment.QUERY_OFFSET +
+        offset +
+        environment.QUERY_COUNT +
+        count
     );
   }
   getFish(fishId: string): Observable<Fish> {
@@ -37,8 +44,8 @@ export class FishDataService {
       fishToUpdate
     );
   }
-  deleteFish(fishId: String): Observable<any> {
-    return this.http.delete<any>(
+  deleteFish(fishId: String): Observable<MessageResult> {
+    return this.http.delete<MessageResult>(
       this.base_url + environment.GET_FISH_URL + fishId
     );
   }

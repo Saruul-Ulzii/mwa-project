@@ -3,9 +3,8 @@ const util = require("util");
 
 authenticate = function (req, res, next) {
   const headerExists = req.headers.authorization;
-  console.log("auth", req.headers.authorization);
   const response = {
-    status: 201,
+    status: process.env.RESPONSE_OK_200,
     message: {},
   };
 
@@ -18,7 +17,7 @@ authenticate = function (req, res, next) {
         _handleAuthError(res, response);
       });
   } else {
-    response.status = process.env.STATUS_CODE_401;
+    response.status = process.env.RESPONSE_UNAUTHORIZED_401;
     response.message = { message: process.env.TOKEN_EMPTY_ERROR };
     _sendResponse(res, response);
   }
@@ -29,7 +28,7 @@ _sendResponse = function (res, response) {
 };
 
 _handleAuthError = function (res, response) {
-  response.status = process.env.STATUS_CODE_401;
+  response.status = process.env.RESPONSE_UNAUTHORIZED_401;
   response.message = { message: process.env.UNAUTHORIZED };
   _sendResponse(res, response);
 };

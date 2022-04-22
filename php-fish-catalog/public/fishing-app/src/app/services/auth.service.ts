@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment';
-import { InfoMessage } from './login/login.component';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +25,7 @@ export class AuthService {
   }
 
   get name() {
-    let name: string = 'Unknown';
+    let name: string = environment.DUMMY_NAME;
 
     if (this.token) {
       name = this.jwt.decodeToken(
@@ -36,21 +35,9 @@ export class AuthService {
     return name;
   }
 
-  #infoMessage: InfoMessage = new InfoMessage(false, '');
-  set infoMessage(errorMessage: InfoMessage) {
-    this.#infoMessage = errorMessage;
-  }
-  get infoMessage() {
-    return this.#infoMessage;
-  }
   set name(name) {
     localStorage.setItem(environment.TOKEN_STORAGE_KEY, name);
     this.isLoggedIn = true;
-  }
-
-  clearMessage() {
-    this.infoMessage.message = '';
-    this.#infoMessage.success = false;
   }
 
   deleteToken() {
